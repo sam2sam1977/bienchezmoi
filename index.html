@@ -1,0 +1,1021 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bien chez moi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1E6B59">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bien chez moi">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<meta name="description" content="Bien chez moi par Habitatpresto : entretien, rappels obligatoires, carnet du logement et artisans vérifiés.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=DM+Sans:opsz,wght@9..40,400..700&display=swap">
+<style>
+/* Layout : colonne d'application façon téléphone, onglets en bas ; sur grand écran, sommaire de démo à gauche */
+:root{
+  --bg:#ECEFEB; --surface:#FFFFFF; --surface-2:#F4F6F3; --ink:#15252A; --muted:#58686C; --line:#D8DFDA;
+  --accent:#1E6B59; --accent-soft:#DCEDE6; --on-accent:#FFFFFF;
+  --warm:#DE5B26; --warm-soft:#FBE4D8; --on-warm:#FFFFFF;
+  --danger:#B93A27; --danger-soft:#F7DED8; --warn:#9A6514; --warn-soft:#F5E9CF; --ok:#2A7A4B; --ok-soft:#DDEFE2;
+  --shadow:0 1px 2px rgba(21,37,42,.06),0 6px 20px rgba(21,37,42,.06);
+  --f-display:'Bricolage Grotesque','DM Sans',system-ui,sans-serif; --f-body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1618; --surface:#162125; --surface-2:#1C292D; --ink:#E6EDEB; --muted:#9BACAE; --line:#2A393E;
+  --accent:#5BC1A3; --accent-soft:#17342C; --on-accent:#0E1618; --warm:#F0814F; --warm-soft:#3A2217; --on-warm:#0E1618;
+  --danger:#F07462; --danger-soft:#3B1D18; --warn:#E3B45C; --warn-soft:#33291A; --ok:#6CCB8F; --ok-soft:#173222;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1618; --surface:#162125; --surface-2:#1C292D; --ink:#E6EDEB; --muted:#9BACAE; --line:#2A393E;
+  --accent:#5BC1A3; --accent-soft:#17342C; --on-accent:#0E1618; --warm:#F0814F; --warm-soft:#3A2217; --on-warm:#0E1618;
+  --danger:#F07462; --danger-soft:#3B1D18; --warn:#E3B45C; --warn-soft:#33291A; --ok:#6CCB8F; --ok-soft:#173222;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+h1,h2,h3{font-family:var(--f-display);letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{font-size:24px} h2{font-size:17px}
+p{margin:0}
+a{color:var(--accent)}
+.shell{display:flex;justify-content:center;gap:32px;min-height:100%}
+.side{display:none}
+@media (min-width:980px){
+  .shell{padding-block:24px}
+  .side{display:flex;flex-direction:column;gap:16px;width:270px;position:sticky;top:24px;align-self:flex-start;max-height:calc(100vh - 48px);overflow:auto}
+  .app{border-radius:28px;box-shadow:var(--shadow);border:1px solid var(--line);min-height:calc(100vh - 48px)}
+}
+.side .brand{display:flex;align-items:center;gap:10px}
+.side h2{font-size:22px}
+.side .grp{display:flex;flex-direction:column;gap:2px}
+.side .grp p{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:6px 10px}
+.side a{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:10px;text-decoration:none;color:var(--ink);font-weight:500}
+.side a:hover{background:var(--surface)}
+.side a.on{background:var(--surface);font-weight:700;color:var(--accent)}
+.side .tour{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.side .tour ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.app{width:100%;max-width:470px;background:var(--bg);display:flex;flex-direction:column;position:relative;overflow:clip}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);display:flex;align-items:center;gap:10px;padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.top .ttl{flex:1;min-width:0}
+.top .ttl small{display:block;font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .ttl b{font-family:var(--f-display);font-size:20px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;position:relative;flex:none;color:var(--ink);text-decoration:none}
+.iconbtn .dot{position:absolute;top:6px;right:6px;min-width:17px;height:17px;border-radius:9px;background:var(--warm);color:var(--on-warm);font-size:10.5px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+main{flex:1;display:flex;flex-direction:column;gap:18px;padding-block:4px 24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.tabs{position:sticky;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:6px max(6px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px))}
+.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 0;min-height:48px;justify-content:center}
+.tabs a.on{color:var(--accent);font-weight:700}
+.tabs a.fab span.c{width:52px;height:52px;margin-top:-26px;border-radius:18px;background:var(--warm);color:var(--on-warm);display:grid;place-items:center;box-shadow:0 6px 16px rgba(222,91,38,.35)}
+.tabs a.fab{color:var(--ink)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.sec{display:flex;flex-direction:column;gap:10px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.sec-h a,.link{font-size:13.5px;font-weight:700;color:var(--accent);text-decoration:none;background:none;border:0;padding:0}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:20px;display:flex;flex-direction:column;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-top:1px solid var(--line);background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;width:100%;text-decoration:none;color:inherit}
+.row:first-child{border-top:0}
+a.row:hover,button.row:hover{background:var(--surface-2)}
+.row .b{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.row .b strong{font-weight:700;font-size:15px}
+.row .b span{font-size:13px;color:var(--muted)}
+.row > svg:last-child{color:var(--muted);flex:none}
+.ico{width:40px;height:40px;border-radius:13px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+.ico.w{background:var(--warm-soft);color:var(--warm)}
+.ico.d{background:var(--danger-soft);color:var(--danger)}
+.ico.n{background:var(--surface-2);color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap;background:var(--surface-2);color:var(--muted)}
+.chip.late{background:var(--danger-soft);color:var(--danger)}
+.chip.soon{background:var(--warn-soft);color:var(--warn)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.legal{background:var(--accent-soft);color:var(--accent)}
+.chip.hp{background:var(--warm-soft);color:var(--warm)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 18px;border-radius:14px;border:1px solid transparent;font-weight:700;font-size:15px;background:var(--accent);color:var(--on-accent);text-decoration:none;text-align:center}
+.btn.warm{background:var(--warm);color:var(--on-warm)}
+.btn.ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.sm{min-height:36px;padding:0 12px;font-size:13.5px;border-radius:11px}
+.btn.full{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btns > *{flex:1}
+.seg{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:2px}
+.seg a,.seg button{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--muted);text-decoration:none}
+.seg .on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;text-align:left;text-decoration:none;color:var(--ink);font-weight:700;font-size:13.5px;line-height:1.25;min-width:0}
+.tile:hover{border-color:var(--accent)}
+.tile span.small{font-weight:500;color:var(--muted)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:14px;margin:0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:600;text-align:right;min-width:0}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:700}
+.input{width:100%;min-height:46px;border-radius:13px;border:1px solid var(--line);background:var(--surface);padding:10px 12px}
+textarea.input{min-height:90px;resize:vertical}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px}
+.check input{width:20px;height:20px;accent-color:var(--accent);flex:none;margin-top:1px}
+.switch{position:relative;width:46px;height:28px;flex:none}
+.switch input{opacity:0;width:100%;height:100%;position:absolute;inset:0;margin:0;cursor:pointer;z-index:1}
+.switch span{position:absolute;inset:0;border-radius:99px;background:var(--line);transition:.2s}
+.switch span::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:var(--surface);top:3px;left:3px;transition:.2s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.switch input:checked+span{background:var(--accent)}
+.switch input:checked+span::after{left:21px}
+.note{font-size:12.5px;color:var(--muted);display:flex;gap:6px;align-items:flex-start}
+.note svg{flex:none;margin-top:2px}
+.banner{border-radius:18px;padding:14px;display:flex;gap:12px;align-items:flex-start}
+.banner.d{background:var(--danger-soft)}
+.banner.a{background:var(--accent-soft)}
+.banner.w{background:var(--warm-soft)}
+.banner > div{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.bar{height:8px;border-radius:9px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:9px}
+.hscroll{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory;margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));padding-right:16px}
+.art{flex:none;width:230px;scroll-snap-align:start;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;text-align:left;display:flex;flex-direction:column;text-decoration:none;color:inherit}
+.pic{display:grid;place-items:center;color:var(--ink)}
+.art .tx{padding:12px;display:flex;flex-direction:column;gap:4px}
+.art .tx b{font-size:14.5px;line-height:1.25}
+.hero{background:var(--ink);color:var(--bg);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden}
+.hero .muted,.hero .eyebrow{color:color-mix(in srgb,var(--bg) 72%,transparent)}
+.ring{width:84px;height:84px;flex:none;position:relative}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:24px}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;gap:12px;position:relative;padding-bottom:16px}
+.step:last-child{padding-bottom:0}
+.step::before{content:"";position:absolute;left:11px;top:24px;bottom:0;width:2px;background:var(--line)}
+.step:last-child::before{display:none}
+.step .pt{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);background:var(--surface);flex:none;display:grid;place-items:center;z-index:1}
+.step.done .pt{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.step.cur .pt{border-color:var(--warm);background:var(--warm-soft)}
+.dpe{display:flex;flex-direction:column;gap:4px}
+.dpe div{height:26px;border-radius:0 8px 8px 0;font-weight:800;font-size:13px;display:flex;align-items:center;padding-left:10px;gap:8px;white-space:nowrap}
+.dpe div.me{outline:3px solid var(--ink);outline-offset:1px}
+.bars{display:flex;align-items:flex-end;gap:5px;height:130px;border-bottom:1px solid var(--line)}
+.bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;min-width:0}
+.bars i{display:block;width:100%;border-radius:5px 5px 0 0;background:var(--accent)}
+.bars span{font-size:10px;color:var(--muted)}
+.chat{display:flex;flex-direction:column;gap:10px}
+.msg{max-width:86%;padding:10px 13px;border-radius:16px;font-size:14.5px;white-space:pre-line}
+.msg.me{align-self:flex-end;background:var(--accent);color:var(--on-accent);border-bottom-right-radius:5px}
+.msg.bot{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:5px}
+.thumb{width:100%;aspect-ratio:4/3;max-width:100%;border-radius:16px;object-fit:cover;background:var(--surface-2);display:block}
+.drop{border:2px dashed var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;background:var(--surface);cursor:pointer}
+.drop:hover{border-color:var(--accent)}
+.opt{display:flex;gap:12px;align-items:center;border:2px solid var(--line);border-radius:16px;padding:12px;background:var(--surface);text-align:left;width:100%;cursor:pointer}
+.opt.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.stars{display:flex;gap:4px}
+.stars button{background:none;border:0;font-size:30px;color:var(--line);padding:0}
+.stars button.on{color:var(--warm)}
+.prose{display:flex;flex-direction:column;gap:12px;font-size:15.5px;line-height:1.6}
+.prose h4{font-family:var(--f-display);font-size:17px;margin:4px 0 0}
+.prose ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+ul.ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:14px;font-weight:600;font-size:14px;z-index:80;max-width:min(420px,calc(100% - 32px));box-shadow:var(--shadow)}
+.doc-paper{background:#FFFFFF;color:#1d2a2e;border-radius:12px;border:1px solid var(--line);padding:16px;font-size:12.5px;display:flex;flex-direction:column;gap:10px}
+.doc-paper table{width:100%;border-collapse:collapse}
+.doc-paper td{padding:4px 0;border-bottom:1px solid #e6e9e7}
+.doc-paper td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.num{font-variant-numeric:tabular-nums}
+.empty{text-align:center;padding:24px 12px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:8px}
+.foot{text-align:center;font-size:12px;color:var(--muted);padding-top:6px}
+.ov{position:fixed;inset:0;background:rgba(10,18,20,.45);z-index:50;display:flex;justify-content:center;align-items:flex-end}
+.sheet{background:var(--bg);width:100%;max-width:470px;max-height:92vh;border-radius:24px 24px 0 0;display:flex;flex-direction:column;overflow:hidden;animation:up .22s ease-out}
+@media (min-width:980px){.ov{align-items:center}.sheet{border-radius:24px;max-height:86vh}}
+@keyframes up{from{transform:translateY(30px);opacity:.6}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+.sheet header{display:flex;align-items:center;gap:10px;padding:14px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line)}
+.sheet header h3{flex:1;font-size:18px;min-width:0}
+.sheet .bd{overflow:auto;display:flex;flex-direction:column;gap:14px;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:12.5px}
+.cal span{padding:6px 0;border-radius:9px}
+.cal .h{color:var(--muted);font-weight:700;font-size:11px}
+.cal .d{background:var(--surface)}
+.cal .t{background:var(--ink);color:var(--bg);font-weight:700}
+.cal .x{background:var(--warm-soft);color:var(--warm);font-weight:700}
+details.faq{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+details.faq summary{font-weight:700;cursor:pointer}
+details.faq p{margin-top:8px;font-size:14px;color:var(--muted)}
+.plan a{display:flex;justify-content:space-between;gap:8px;padding:9px 12px;border-top:1px solid var(--line);text-decoration:none;color:inherit;font-size:14px}
+.plan a:first-child{border-top:0}
+.plan a span{color:var(--muted);font-size:12px;white-space:nowrap}
+.room{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.floor{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:44px;gap:4px}
+.floor div{background:var(--accent-soft);border-radius:8px;display:grid;place-items:center;font-size:11px;font-weight:700;text-align:center;padding:2px;color:var(--ink)}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.gal > *{aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--surface-2);display:grid;place-items:center;color:var(--muted)}
+.gal img{width:100%;height:100%;object-fit:cover}
+.quote{font-size:14px;border-left:3px solid var(--line);padding-left:10px;color:var(--muted)}
+</style>
+
+
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="side"></aside>
+  <div class="app" id="app">
+    <div class="top" id="top"></div>
+    <main id="view"></main>
+    <nav class="tabs" id="tabs" aria-label="Navigation principale"></nav>
+  </div>
+</div>
+<div id="layer"></div>
+<input type="file" id="f-photo" accept="image/*" capture="environment" hidden>
+<input type="file" id="f-doc" accept="image/*,application/pdf" hidden>
+<input type="file" id="f-eqphoto" accept="image/*" hidden>
+<input type="file" id="f-gal" accept="image/*" hidden>
+
+<script>
+(function(){
+'use strict';
+/* ================= utilitaires ================= */
+const DAY=864e5, T0=new Date(); T0.setHours(12,0,0,0);
+const iso=d=>new Date(d).toISOString().slice(0,10);
+const ago=n=>iso(T0.getTime()-n*DAY), inD=n=>iso(T0.getTime()+n*DAY), today=()=>iso(T0);
+const fmt=(d,o)=>new Date(d).toLocaleDateString('fr-FR',o||{day:'numeric',month:'short',year:'numeric'});
+const fmtDM=d=>new Date(d).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+const addM=(d,m)=>{const x=new Date(d);x.setMonth(x.getMonth()+m);return iso(x)};
+const diff=d=>Math.round((new Date(d)-T0)/DAY);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=s=>document.querySelector(s);
+const uid=p=>p+Math.random().toString(36).slice(2,7);
+const eur=n=>n.toLocaleString('fr-FR')+' €';
+const MONTHS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+
+/* ================= icônes ================= */
+const P={
+ home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+ cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+ cam:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+ doc:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 13h6M9 17h6"/>',
+ book:'<path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 21V5M9 7h6"/>',
+ bell:'<path d="M6 16V11a6 6 0 1112 0v5l2 2H4z"/><path d="M10 21h4"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/>',
+ users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c1-3.5 4-5 7-5s6 1.5 7 5"/><circle cx="17" cy="7" r="2.5"/><path d="M17 12c2.5 0 4.5 1.5 5 4"/>',
+ bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>', chat:'<path d="M4 5h16v11H9l-5 4z"/>',
+ tool:'<path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/>',
+ chev:'<path d="M9 6l6 6-6 6"/>', back:'<path d="M15 6l-6 6 6 6"/>', plus:'<path d="M12 5v14M5 12h14"/>', check:'<path d="M5 12l5 5L20 7"/>',
+ alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/>',
+ share:'<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 11l7.6-4M8.2 13l7.6 4"/>',
+ search:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>', x:'<path d="M6 6l12 12M18 6L6 18"/>',
+ flame:'<path d="M12 3c1 4 5 5 5 10a5 5 0 01-10 0c0-3 2-4 2-7 1.5 1 3 2.5 3 4"/>',
+ wind:'<path d="M3 9h11a3 3 0 10-3-3M3 15h15a3 3 0 11-3 3M3 12h8"/>', drop:'<path d="M12 3s6 7 6 11a6 6 0 01-12 0c0-4 6-11 6-11z"/>',
+ shield:'<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+ roof:'<path d="M2 12l10-8 10 8"/><path d="M5 10v4M19 10v4M4 18h16"/>', plug:'<path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 01-12 0zM12 17v4"/>',
+ leaf:'<path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15"/><path d="M5 19l7-7"/>', menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+ window:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 3v18M4 12h16"/>', smoke:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/>',
+ key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3"/>', crack:'<path d="M12 2l-2 6 4 3-3 5 3 6"/>',
+ euro:'<path d="M17 6a7 7 0 100 12M4 10h9M4 14h9"/>', phone:'<path d="M5 4h4l2 5-3 2a11 11 0 005 5l2-3 5 2v4a2 2 0 01-2 2A17 17 0 013 6a2 2 0 012-2z"/>',
+ lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>', clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ upload:'<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>', trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+ grid:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
+ gift:'<rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1 6 2 6-1-4-3-6 1"/>',
+ star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+ brush:'<path d="M18 3l3 3-9 9-3-3z"/><path d="M9 12c-3 0-5 2-5 5 0 2-1 3-2 4 4 0 8-1 8-5"/>',
+ brick:'<rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 12h18M9 5v7M15 12v7"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>', map:'<path d="M9 4l6 2 6-2v14l-6 2-6-2-6 2V6z"/><path d="M9 4v14M15 6v14"/>',
+ pool:'<path d="M3 17c2 0 2-1.5 4.5-1.5S10 17 12 17s2.5-1.5 4.5-1.5S19 17 21 17M7 14V5a2 2 0 014 0M13 14V5a2 2 0 014 0M7 9h6"/>',
+ tree:'<path d="M12 3l6 9h-4l4 6H6l4-6H6z"/><path d="M12 18v3"/>'
+};
+const ic=(n,s=22)=>`<svg aria-hidden="true" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P[n]||P.info}</svg>`;
+const chev=ic('chev',18);
+
+/* ================= contenus fixes ================= */
+const DPE_COL={A:'#00916E',B:'#55B04A',C:'#A3CB38',D:'#F2D21A',E:'#F0B12C',F:'#E8722A',G:'#D7301F'};
+const SEASONS={
+ hiver:{name:'Hiver',months:[11,0,1],icon:'smoke',items:['Purger les radiateurs','Couper et vidanger les robinets extérieurs avant le gel','Vérifier la pression de la chaudière','Stocker le bois au sec, à l’abri','Vérifier les joints des fenêtres','Dégager les bouches de VMC']},
+ printemps:{name:'Printemps',months:[2,3,4],icon:'leaf',items:['Réserver l’entretien chaudière (−10 % au printemps)','Nettoyer les filtres de la climatisation','Inspecter la toiture après l’hiver','Contrôler les fissures de façade','Nettoyer la terrasse et les évacuations']},
+ ete:{name:'Été',months:[5,6,7],icon:'wind',items:['Nettoyer l’unité extérieure de la clim','Vérifier les volets et stores','Débroussailler autour de la maison','Contrôler les joints de la salle de bains']},
+ automne:{name:'Automne',months:[8,9,10],icon:'roof',items:['Nettoyer les gouttières après la chute des feuilles','Faire ramoner avant la première flambée','Faire entretenir la chaudière avant l’hiver','Tester les détecteurs de fumée','Purger les radiateurs','Rentrer le mobilier de jardin']}
+};
+const seasonNow=()=>Object.keys(SEASONS).find(k=>SEASONS[k].months.includes(T0.getMonth()));
+
+const OBL={
+ chaudiere:{t:'Entretien annuel de la chaudière',icon:'flame',task:'ch-ent',freq:'Chaque année',who:'L’occupant : propriétaire ou locataire',scope:'Chaudières gaz, fioul, bois ou charbon de 4 à 400 kW',ref:'Décret n° 2009-649 du 9 juin 2009, arrêté du 15 septembre 2009',
+  body:['L’entretien comprend le nettoyage, le réglage et le contrôle de l’appareil, ainsi qu’une mesure du monoxyde de carbone.','Le professionnel remet une attestation d’entretien dans les 15 jours. Elle doit être conservée au moins 2 ans.','En cas de sinistre, l’assureur peut réduire ou refuser l’indemnisation si l’entretien n’a pas été fait.']},
+ pac:{t:'Entretien des pompes à chaleur et climatisations',icon:'wind',task:'cl-ent',freq:'Tous les 2 ans',who:'L’occupant',scope:'Systèmes thermodynamiques de 4 à 70 kW (PAC air-air, air-eau, climatisation)',ref:'Décret n° 2020-912 du 28 juillet 2020',
+  body:['L’entretien porte sur le fonctionnement, l’étanchéité du circuit et le rendement de l’appareil.','Le professionnel remet une attestation, à conserver au moins 2 ans.','Entre deux visites, nettoyez les filtres de l’unité intérieure tous les 3 mois environ.']},
+ ramonage:{t:'Ramonage des conduits',icon:'flame',task:'in-ram',freq:'1 à 2 fois par an',who:'L’occupant',scope:'Conduits de cheminée, insert, poêle, chaudière',ref:'Règlement sanitaire départemental',
+  body:['Le nombre de ramonages dépend du règlement sanitaire de votre département, souvent deux par an pour le bois dont un pendant la période de chauffe.','Le ramoneur remet un certificat de ramonage.','Après un incendie, l’assureur demande presque toujours ce certificat.']},
+ daaf:{t:'Détecteur de fumée',icon:'smoke',task:'da-test',freq:'Test mensuel conseillé',who:'Le propriétaire l’installe, l’occupant l’entretient',scope:'Tous les logements, au moins un détecteur',ref:'Loi n° 2010-238 du 9 mars 2010',
+  body:['Le détecteur doit être conforme à la norme NF EN 14604.','Installez-le de préférence dans le couloir qui dessert les chambres, au plafond.','Remplacez-le en fin de vie de la pile, environ tous les 10 ans.']},
+ spanc:{t:'Contrôle de l’assainissement individuel',icon:'drop',freq:'Au moins tous les 10 ans',who:'Le propriétaire',scope:'Fosses septiques et micro-stations non raccordées au tout-à-l’égout',ref:'Code de la santé publique, article L1331-1-1',
+  body:['Le SPANC de votre commune contrôle le bon fonctionnement de l’installation.','À la vente, un rapport de contrôle de moins de 3 ans doit être annexé à la promesse.','Votre maison est raccordée au tout-à-l’égout : vous n’êtes pas concerné.']},
+ debroussaillement:{t:'Débroussaillement',icon:'tree',freq:'Chaque année',who:'Le propriétaire',scope:'Communes exposées aux feux de forêt, dans un rayon de 50 m autour des constructions',ref:'Code forestier, obligations légales de débroussaillement',
+  body:['L’obligation s’applique dans les zones désignées par arrêté préfectoral.','Elle consiste à réduire la végétation pour limiter la propagation d’un incendie.','Vérifiez sur Géorisques ou en mairie si votre adresse est concernée.']},
+ diagnostics:{t:'Diagnostics à la vente',icon:'doc',freq:'À chaque vente',who:'Le vendeur',scope:'Dossier de diagnostic technique annexé à la promesse de vente',ref:'Code de la construction et de l’habitation, article L271-4',
+  body:['<ul><li><b>DPE</b>, valable 10 ans</li><li><b>Amiante</b> si le permis de construire date d’avant juillet 1997</li><li><b>Plomb</b> si le logement date d’avant 1949</li><li><b>Gaz et électricité</b> si l’installation a plus de 15 ans</li><li><b>Termites</b> dans les zones désignées par arrêté préfectoral</li><li><b>État des risques</b>, de moins de 6 mois</li><li><b>Assainissement</b> si non raccordé au tout-à-l’égout</li></ul>','Votre maison de 1978 est concernée par l’amiante, le gaz, l’électricité et l’état des risques. La Charente-Maritime est en zone termites.']},
+ cil:{t:'Carnet d’information du logement',icon:'book',freq:'À tenir à jour',who:'Le propriétaire',scope:'Logements neufs et travaux ayant un effet sur la performance énergétique engagés depuis le 1er janvier 2023',ref:'Article L126-35-2 du CCH, décret n° 2022-1674',
+  body:['Le carnet rassemble les plans et descriptifs, les notices des équipements, les documents sur les matériaux et le DPE.','Il est transmis à l’acquéreur au moment de la vente.','Bien chez moi le tient à jour automatiquement avec les documents des artisans Habitatpresto.']},
+ location:{t:'Si vous louez ce logement',icon:'key',freq:'Selon le calendrier de la loi Climat',who:'Le propriétaire bailleur',scope:'Logements loués en résidence principale',ref:'Loi Climat et résilience du 22 août 2021',
+  body:['Un logement doit être décent pour être loué. Les logements les plus énergivores sortent progressivement de la location :','<ul><li>Classe G : interdite à la location depuis 2025</li><li>Classe F : à partir de 2028</li><li>Classe E : à partir de 2034</li></ul>','Le DPE et les diagnostics doivent être annexés au bail.']},
+ piscine:{t:'Sécurité des piscines',icon:'pool',freq:'Dès l’installation',who:'Le propriétaire',scope:'Piscines privées enterrées ou semi-enterrées',ref:'Loi n° 2003-9 du 3 janvier 2003',
+  body:['Un dispositif de sécurité normalisé est obligatoire : barrière, couverture, abri ou alarme.','Le défaut de dispositif est sanctionné d’une amende.','Vous n’avez pas déclaré de piscine.']}
+};
+
+const DIAG={
+ plomberie:{t:'Plomberie',icon:'drop',title:'Fuite au siphon ou sur un flexible',what:'Les fuites sous évier viennent le plus souvent d’un joint de siphon usé ou d’un flexible fatigué.',urg:'Moyenne',job:'plombier',price:'90 à 200 €',now:['Fermez le robinet d’arrêt sous l’évier','Placez une bassine et séchez le meuble','Relevez le compteur d’eau pour repérer une surconsommation'],presta:'Recherche de fuite'},
+ chauffage:{t:'Chauffage',icon:'flame',title:'Panne ou mise en sécurité de la chaudière',what:'Une pression trop basse ou un défaut d’allumage met souvent la chaudière en sécurité.',urg:'Élevée',job:'chauffagiste',price:'90 à 250 €',now:['Notez le code erreur affiché','Vérifiez la pression (1 à 1,5 bar)','Réarmez une seule fois, sans insister'],presta:'Dépannage de chaudière'},
+ electricite:{t:'Électricité',icon:'plug',title:'Un circuit qui disjoncte',what:'Un appareil défectueux ou un circuit surchargé déclenche souvent le différentiel.',urg:'Moyenne',job:'electricien',price:'80 à 200 €',now:['Débranchez les appareils du circuit','Réenclenchez le disjoncteur','Ne touchez pas une prise qui chauffe ou noircit'],presta:'Dépannage électrique'},
+ toiture:{t:'Toiture',icon:'roof',title:'Tuile déplacée ou gouttière obstruée',what:'Les infiltrations après un coup de vent viennent souvent d’une tuile glissée ou d’un débordement de gouttière.',urg:'Moyenne',job:'couvreur',price:'150 à 400 €',now:['Placez un récipient sous l’infiltration','Ne montez pas sur le toit','Photographiez la tache au plafond'],presta:'Réparation de toiture'},
+ humidite:{t:'Humidité',icon:'wind',title:'Condensation et ventilation insuffisante',what:'Des moisissures dans les angles signalent souvent un manque d’aération ou une VMC encrassée.',urg:'Faible',job:'chauffagiste',price:'90 à 300 €',now:['Aérez 10 minutes matin et soir','Nettoyez les bouches de VMC','Traitez les traces au vinaigre blanc'],presta:'Traitement de l’humidité'},
+ fissure:{t:'Fissure',icon:'crack',title:'Fissure à surveiller',what:'Sur une maison exposée au retrait-gonflement des argiles, une fissure qui évolue doit être examinée.',urg:'Faible',job:'macon',price:'Diagnostic 100 à 300 €',now:['Mesurez la largeur avec une règle','Collez un témoin en papier en travers','Reprenez une photo dans un mois'],presta:'Diagnostic de fissure'},
+ serrurerie:{t:'Serrurerie',icon:'key',title:'Serrure bloquée ou porte qui frotte',what:'Un cylindre usé ou une porte qui a bougé avec l’humidité sont les causes les plus fréquentes.',urg:'Moyenne',job:'menuisier',price:'80 à 250 €',now:['Ne forcez pas la clé','Méfiez-vous des dépanneurs sans devis écrit'],presta:'Serrurerie'},
+ menuiserie:{t:'Menuiserie',icon:'window',title:'Fenêtre ou volet à régler',what:'Une fenêtre qui ferme mal se règle souvent au niveau des ferrures.',urg:'Faible',job:'menuisier',price:'80 à 200 €',now:['Vérifiez la garantie dans votre carnet','Graissez les ferrures'],presta:'Réglage de menuiseries'}
+};
+
+const METIERS={
+ chauffagiste:{t:'Chauffagiste',icon:'flame',d:'Installation, entretien et dépannage de chaudières, radiateurs et planchers chauffants.',jobs:[['Entretien de chaudière gaz','110 à 150 €'],['Dépannage de chaudière','90 à 250 €'],['Désembouage du circuit','400 à 900 €'],['Remplacement de chaudière à condensation','3 500 à 6 500 €']]},
+ plombier:{t:'Plombier',icon:'drop',d:'Fuites, sanitaires, chauffe-eau, canalisations.',jobs:[['Recherche et réparation de fuite','90 à 250 €'],['Remplacement de chauffe-eau','800 à 1 800 €'],['Débouchage de canalisation','100 à 300 €'],['Pose de WC','250 à 600 €']]},
+ electricien:{t:'Électricien',icon:'plug',d:'Tableaux, mise aux normes, dépannages, prises et éclairage.',jobs:[['Dépannage électrique','80 à 200 €'],['Remplacement du tableau électrique','900 à 2 000 €'],['Ajout d’une prise','80 à 150 €'],['Mise aux normes complète','80 à 120 €/m²']]},
+ couvreur:{t:'Couvreur',icon:'roof',d:'Toiture, gouttières, isolation des combles par l’extérieur.',jobs:[['Nettoyage de gouttières','150 à 300 €'],['Remplacement de tuiles','150 à 400 €'],['Démoussage de toiture','15 à 30 €/m²'],['Réfection complète','120 à 250 €/m²']]},
+ macon:{t:'Maçon',icon:'brick',d:'Fissures, murs, dalles, ouvertures et extensions.',jobs:[['Diagnostic de fissure','100 à 300 €'],['Ouverture d’un mur porteur','2 000 à 5 000 €'],['Ravalement de façade','40 à 100 €/m²'],['Dalle béton','60 à 120 €/m²']]},
+ menuisier:{t:'Menuisier',icon:'window',d:'Fenêtres, portes, volets, serrurerie et placards.',jobs:[['Réglage de fenêtre','80 à 200 €'],['Remplacement d’une fenêtre PVC','500 à 1 200 €'],['Changement de serrure','100 à 300 €'],['Pose de volets roulants','400 à 900 €']]},
+ peintre:{t:'Peintre',icon:'brush',d:'Peinture intérieure et extérieure, papiers peints, enduits.',jobs:[['Peinture d’une pièce de 12 m²','600 à 1 200 €'],['Peinture de plafond','20 à 35 €/m²'],['Traitement des moisissures','300 à 800 €'],['Peinture de façade','25 à 50 €/m²']]},
+ climaticien:{t:'Climaticien',icon:'wind',d:'Climatisation, pompes à chaleur air-air et air-eau, ventilation.',jobs:[['Entretien de climatisation','120 à 200 €'],['Pose d’un climatiseur mono-split','1 500 à 3 000 €'],['Pompe à chaleur air-eau','10 000 à 18 000 €'],['Installation de VMC','500 à 1 500 €']]}
+};
+
+const AIDES={
+ maprimerenov:{t:'MaPrimeRénov’',icon:'euro',d:'L’aide de l’État pour la rénovation énergétique.',body:['Le montant dépend de vos revenus, classés en 4 catégories, et des travaux réalisés.','Elle finance des gestes (isolation, chauffage, ventilation) ou une rénovation d’ampleur accompagnée.','Les travaux doivent être faits par un artisan RGE. Les conditions changent souvent : vérifiez-les sur france-renov.gouv.fr avant de signer un devis.'],who:'Propriétaires occupants et bailleurs, logement de plus de 15 ans'},
+ cee:{t:'Primes énergie (CEE)',icon:'bolt',d:'Versées par les fournisseurs d’énergie, cumulables avec MaPrimeRénov’.',body:['Les fournisseurs d’énergie doivent financer des économies d’énergie. Ils versent des primes pour l’isolation, le chauffage ou la ventilation.','La demande doit être faite avant la signature du devis.','Les primes « Coup de pouce » sont plus élevées pour certains travaux.'],who:'Tous les ménages, sans condition de revenus pour la plupart des primes'},
+ ecoptz:{t:'Éco-prêt à taux zéro',icon:'euro',d:'Un prêt sans intérêts pour financer les travaux.',body:['Il finance des travaux de rénovation énergétique sans intérêts, jusqu’à 50 000 € pour une rénovation globale.','Il est demandé auprès d’une banque partenaire, sans condition de revenus.','Il peut compléter MaPrimeRénov’.'],who:'Propriétaires d’un logement de plus de 2 ans'},
+ tva:{t:'TVA à 5,5 %',icon:'doc',d:'Un taux réduit appliqué directement sur la facture.',body:['Les travaux de rénovation énergétique bénéficient d’une TVA à 5,5 %.','Les autres travaux d’amélioration dans un logement de plus de 2 ans sont à 10 %.','L’artisan applique le taux réduit lui-même : rien à demander.'],who:'Logements de plus de 2 ans'},
+ locales:{t:'Aides locales',icon:'map',d:'Région, département, agglomération.',body:['Certaines collectivités complètent les aides nationales, souvent pour les ménages modestes ou les rénovations globales.','Un conseiller France Rénov’ de votre territoire peut vous dire ce qui existe près de chez vous, gratuitement.'],who:'Selon la collectivité'}
+};
+
+const ART=[
+ {id:'a1',cat:'Entretien',icon:'flame',min:4,eq:'chaudiere',t:'Entretien de chaudière gaz : obligatoire, à quel prix, à quel moment ?',
+  body:['L’entretien d’une chaudière gaz est obligatoire chaque année, que vous soyez propriétaire ou locataire. C’est l’occupant qui s’en charge.','<h4>Ce que fait l’artisan</h4><ul><li>Nettoyage du corps de chauffe et du brûleur</li><li>Contrôle de l’évacuation des fumées et mesure du monoxyde de carbone</li><li>Réglages pour limiter la consommation</li><li>Remise d’une attestation sous 15 jours</li></ul>','<h4>Combien ça coûte ?</h4>Comptez en général entre 100 et 150 € pour une visite. Un contrat d’entretien lisse la dépense et ajoute souvent le déplacement en cas de panne.','<h4>Le bon moment</h4>Au printemps : les chauffagistes sont plus disponibles qu’en octobre et beaucoup proposent une remise.']},
+ {id:'a2',cat:'Saison',icon:'cal',min:3,t:'Préparer sa maison à l’hiver : la checklist en 8 points',
+  body:['Une heure de vérifications en novembre évite la plupart des mauvaises surprises de janvier.','<ul><li>Purger les radiateurs</li><li>Vérifier la pression de la chaudière</li><li>Vidanger les robinets extérieurs</li><li>Nettoyer les gouttières</li><li>Faire ramoner avant la première flambée</li><li>Tester les détecteurs de fumée</li><li>Vérifier les joints de fenêtres</li><li>Dégager les bouches de VMC</li></ul>','Cette liste est dans Entretien, rubrique Saison : cochez au fur et à mesure.']},
+ {id:'a3',cat:'Entretien',icon:'drop',min:2,t:'Purger ses radiateurs en 5 minutes',
+  body:['Un radiateur froid en haut et chaud en bas contient de l’air. Le purger améliore le confort et la consommation.','<h4>Pas à pas</h4><ul><li>Coupez le chauffage et attendez que les radiateurs refroidissent</li><li>Placez un chiffon et un récipient sous la vis de purge</li><li>Ouvrez la vis d’un quart de tour</li><li>Refermez dès que l’eau coule sans bulles</li><li>Remontez la pression de la chaudière entre 1 et 1,5 bar</li></ul>','Si un radiateur reste froid, un équilibrage ou un désembouage peut être nécessaire.']},
+ {id:'a4',cat:'Sécurité',icon:'smoke',min:2,eq:'daaf',t:'Détecteur de fumée : les 3 gestes à connaître',
+  body:['Le détecteur de fumée est obligatoire dans chaque logement depuis 2015. La plupart des incendies mortels ont lieu la nuit.','<ul><li><b>Le tester chaque mois</b> avec le bouton test</li><li><b>Le dépoussiérer</b> deux fois par an</li><li><b>Le remplacer</b> en fin de vie de la pile, environ 10 ans</li></ul>','Choisissez un modèle marqué NF EN 14604.']},
+ {id:'a5',cat:'Énergie',icon:'leaf',min:5,t:'Maison classée E : quels travaux pour gagner une classe ?',
+  body:['Une maison des années 70 classée E perd surtout sa chaleur par la toiture, les murs et la ventilation.','<h4>Par ordre d’efficacité habituel</h4><ul><li>Isoler les combles</li><li>Isoler les murs</li><li>Remplacer la chaudière par une pompe à chaleur air-eau</li><li>Installer une VMC hygroréglable</li></ul>','Des aides existent : MaPrimeRénov’, primes CEE, éco-PTZ. Un conseiller France Rénov’ peut faire le point gratuitement.']},
+ {id:'a6',cat:'Démarches',icon:'book',min:4,t:'Le carnet d’information du logement, comment ça marche ?',
+  body:['Depuis le 1er janvier 2023, un carnet d’information du logement doit être tenu pour les logements neufs et ceux qui font des travaux ayant un effet sur la performance énergétique.','<h4>Ce qu’il contient</h4><ul><li>Les plans, schémas et descriptifs des travaux</li><li>Les notices des équipements</li><li>Les documents sur les matériaux utilisés</li><li>Le DPE</li></ul>','À la vente, le carnet est transmis à l’acquéreur. Bien chez moi le tient à jour pour vous.']},
+ {id:'a7',cat:'Entretien',icon:'wind',min:3,eq:'clim',t:'Pompe à chaleur et clim : un entretien tous les 2 ans',
+  body:['Depuis 2020, les pompes à chaleur et climatisations de 4 à 70 kW doivent être entretenues tous les deux ans par un professionnel.','Entre deux visites, nettoyez les filtres de l’unité intérieure tous les trois mois.','Une machine entretenue consomme moins et dure plus longtemps.']},
+ {id:'a8',cat:'Travaux',icon:'crack',min:4,t:'Fissures sur la façade : quand faut-il s’inquiéter ?',
+  body:['Une microfissure est souvent esthétique. Une fissure qui s’élargit, traverse le mur ou forme un escalier doit être examinée.','<h4>Le test simple</h4>Collez un témoin en papier en travers de la fissure et prenez-la en photo chaque mois. Si le témoin casse, faites venir un professionnel.','Dans les zones à retrait-gonflement des argiles, les sécheresses aggravent les fissures.']},
+ {id:'a9',cat:'Sécurité',icon:'alert',min:2,t:'Odeur de gaz : les bons réflexes',
+  body:['<ul><li>N’allumez ni flamme ni interrupteur</li><li>Ouvrez les fenêtres</li><li>Fermez le robinet de gaz au compteur</li><li>Sortez du logement</li><li>Appelez Urgence Sécurité Gaz au 0 800 47 33 33</li></ul>','Ne rentrez pas avant l’intervention des techniciens.']},
+ {id:'a10',cat:'Entretien',icon:'roof',min:3,eq:'toit',t:'Gouttières bouchées : les dégâts qu’on ne voit pas',
+  body:['Une gouttière bouchée déborde le long de la façade, mouille les fondations et peut faire entrer l’eau sous la toiture.','Un nettoyage par an, après la chute des feuilles, suffit le plus souvent. Pour une maison à étage, faites appel à un professionnel équipé.']},
+ {id:'a11',cat:'Énergie',icon:'euro',min:3,t:'5 gestes pour baisser sa facture de chauffage',
+  body:['<ul><li>19 °C dans les pièces de vie, 17 °C dans les chambres</li><li>Fermer volets et rideaux la nuit</li><li>Purger les radiateurs</li><li>Programmer une baisse en votre absence</li><li>Faire entretenir la chaudière</li></ul>']},
+ {id:'a12',cat:'Travaux',icon:'drop',min:3,eq:'vmc',t:'Humidité et moisissures : la VMC en premier suspect',
+  body:['Des traces noires dans les angles ou de la buée persistante signalent souvent une ventilation insuffisante.','Nettoyez les bouches d’extraction tous les six mois et vérifiez qu’elles aspirent : une feuille de papier doit tenir collée.']},
+ {id:'a13',cat:'Entretien',icon:'drop',min:2,eq:'ecs',t:'Ballon d’eau chaude : le geste mensuel qui le fait durer',
+  body:['Le groupe de sécurité protège le ballon d’une surpression. Actionnez-le une fois par mois quelques secondes : l’eau doit s’écouler à l’égout.','Un détartrage tous les 2 ans environ, plus souvent si l’eau est calcaire, préserve la résistance.']},
+ {id:'a14',cat:'Démarches',icon:'doc',min:4,t:'Vendre sa maison : les diagnostics à prévoir',
+  body:['Le vendeur doit fournir un dossier de diagnostic technique : DPE, amiante, plomb, gaz, électricité, termites, état des risques selon le logement.','Avec un carnet complet, l’acheteur voit l’entretien réalisé et le notaire gagne du temps.']},
+ {id:'a15',cat:'Énergie',icon:'wind',min:2,eq:'clim',t:'Climatisation : les bons réglages l’été',
+  body:['Ne descendez pas sous 26 °C et évitez plus de 7 °C d’écart avec l’extérieur.','Fermez les volets aux heures chaudes et aérez la nuit.']},
+ {id:'a16',cat:'Travaux',icon:'shield',min:3,t:'Bien choisir son artisan : 6 vérifications',
+  body:['<ul><li>Un numéro SIRET actif</li><li>Une assurance décennale pour les travaux concernés</li><li>Une qualification RGE pour obtenir les aides</li><li>Un devis écrit et détaillé</li><li>Des avis de clients réels</li><li>Pas d’acompte excessif à la signature</li></ul>','Les artisans Habitatpresto sont vérifiés sur ces points avant d’être proposés.']}
+];
+
+const FAQ=[
+ ['Bien chez moi est-il gratuit ?','Oui. Le carnet, les rappels, les documents et les demandes de devis sont gratuits. Seuls les contrats d’entretien et l’offre Bien chez moi+ sont payants.'],
+ ['Qui voit mes documents ?','Vous seul, et les personnes que vous invitez. Un artisan ne voit que ce que vous joignez à une demande.'],
+ ['Comment les factures arrivent-elles toutes seules ?','Les artisans qui utilisent le logiciel Taloche déposent directement leurs devis, factures et attestations dans votre carnet.'],
+ ['Que se passe-t-il si je vends ma maison ?','Vous transmettez le carnet au nouveau propriétaire en un lien. L’historique d’entretien suit la maison.'],
+ ['Les artisans sont-ils vérifiés ?','Habitatpresto contrôle le SIRET, l’assurance décennale et les qualifications, et publie les avis de clients après intervention.'],
+ ['Je suis locataire, l’app me sert-elle ?','Oui : l’entretien de la chaudière et du détecteur de fumée est à votre charge. Votre propriétaire peut partager le carnet avec vous.']
+];
+
+/* ================= données d'exemple ================= */
+function seed(){
+ return {v:4,
+  user:{first:'Claire',last:'Dupont',phone:'06 12 34 56 78',email:'claire.dupont@exemple.fr',code:'CLAIRE-17'},
+  house:{address:'14 allée des Tamaris, 17000 La Rochelle',type:'Maison individuelle',year:1978,surface:112,rooms:5,levels:2,land:480,heating:'Gaz naturel, chaudière à condensation',ecs:'Ballon électrique 200 L',sanit:'Tout-à-l’égout',dpe:'E',dpeVal:268,ges:'D',gesVal:42,dpeDate:'2021-09-14',dpeNum:'2117E0123456X',status:'Propriétaire occupant',walls:'Parpaing, isolation intérieure 6 cm',roof:'Tuiles canal, combles perdus isolés 10 cm',windows:'PVC double vitrage (2019)'},
+  homes:[{name:'Résidence principale',address:'14 allée des Tamaris, La Rochelle',main:true}],
+  rooms:[['Séjour',34,'Climatisation, insert à bois'],['Cuisine',12,'Évier, hotte'],['Chambre 1',14,'Radiateur'],['Chambre 2',11,'Radiateur'],['Chambre 3',10,'Radiateur'],['Salle de bains',6,'Sèche-serviettes'],['WC',2,''],['Cellier',8,'Chaudière, ballon d’eau chaude'],['Entrée et couloir',15,'Tableau électrique, détecteur']],
+  eq:[
+   {id:'chaudiere',icon:'flame',name:'Chaudière gaz',model:'Saunier Duval ThemaPlus Condens · 25 kW',year:2016,room:'Cellier',pro:'Thermique Océan',serial:'21-16-41-0099841',tasks:[
+    {id:'ch-ent',label:'Entretien annuel par un professionnel',every:12,legal:'chaudiere',pro:true,presta:'Entretien de chaudière gaz',last:ago(400)},
+    {id:'ch-pres',label:'Vérifier la pression (entre 1 et 1,5 bar)',every:1,last:ago(18)}]},
+   {id:'clim',icon:'wind',name:'Climatisation réversible',model:'Daikin Perfera · PAC air-air 5 kW',year:2022,room:'Séjour',pro:'Clim’Atlantique',warranty:addM('2022-06-10',60),tasks:[
+    {id:'cl-ent',label:'Entretien par un professionnel',every:24,legal:'pac',pro:true,presta:'Entretien de pompe à chaleur',last:ago(560)},
+    {id:'cl-filt',label:'Nettoyer les filtres de l’unité intérieure',every:3,last:ago(72)}]},
+   {id:'insert',icon:'flame',name:'Insert à bois',model:'Insert fonte · conduit tubé',year:2008,room:'Séjour',pro:'Ramonage Rochelais',tasks:[
+    {id:'in-ram',label:'Ramonage du conduit',every:12,legal:'ramonage',pro:true,presta:'Ramonage de cheminée',last:ago(300)}]},
+   {id:'daaf',icon:'smoke',name:'Détecteurs de fumée (×2)',model:'DAAF NF EN 14604 · pile 10 ans',year:2017,room:'Couloir et entrée',tasks:[
+    {id:'da-test',label:'Tester les détecteurs (bouton test)',every:1,last:ago(41),legal:'daaf'},
+    {id:'da-rep',label:'Remplacer les détecteurs (fin de vie)',every:120,last:'2017-03-01'}]},
+   {id:'vmc',icon:'wind',name:'VMC simple flux',model:'Aldes · autoréglable',year:2010,room:'Combles',tasks:[
+    {id:'vm-bou',label:'Nettoyer les bouches d’extraction',every:6,last:ago(152)},
+    {id:'vm-pro',label:'Contrôle du caisson et des conduits',every:36,pro:true,presta:'Entretien de VMC',last:ago(900)}]},
+   {id:'toit',icon:'roof',name:'Toiture et gouttières',model:'Tuiles canal · gouttières zinc',year:1978,room:'Extérieur',tasks:[
+    {id:'to-gou',label:'Nettoyer les gouttières',every:12,last:ago(382),pro:true,presta:'Nettoyage de gouttières'},
+    {id:'to-ctl',label:'Contrôle de la toiture',every:60,pro:true,presta:'Contrôle de toiture',last:'2022-04-20'}]},
+   {id:'ecs',icon:'drop',name:'Ballon d’eau chaude',model:'Atlantic · électrique 200 L',year:2016,room:'Cellier',tasks:[
+    {id:'ec-det',label:'Vidange et détartrage',every:24,pro:true,presta:'Détartrage de chauffe-eau',last:ago(610)},
+    {id:'ec-gs',label:'Actionner le groupe de sécurité',every:1,last:ago(12)}]},
+   {id:'elec',icon:'plug',name:'Tableau électrique',model:'2 rangées · différentiels 30 mA',year:2005,room:'Entrée',tasks:[
+    {id:'el-diff',label:'Tester les différentiels (bouton T)',every:6,last:ago(98)}]},
+   {id:'fen',icon:'window',name:'Fenêtres PVC',model:'11 menuiseries · Menuiserie Atlantique',year:2019,room:'Toute la maison',warranty:'2029-05-15',tasks:[
+    {id:'fe-joi',label:'Graisser les ferrures, vérifier les joints',every:12,last:ago(250)}]}
+  ],
+  season:{key:'',items:[]},
+  history:[
+   {date:ago(400),label:'Entretien chaudière gaz',by:'Thermique Océan',eq:'chaudiere'},
+   {date:ago(300),label:'Ramonage du conduit',by:'Ramonage Rochelais',eq:'insert'},
+   {date:ago(560),label:'Entretien climatisation',by:'Clim’Atlantique',eq:'clim'},
+   {date:'2022-06-10',label:'Installation de la climatisation réversible',by:'Clim’Atlantique',eq:'clim'},
+   {date:'2019-05-15',label:'Remplacement des 11 fenêtres',by:'Menuiserie Atlantique',eq:'fen'},
+   {date:'2016-10-03',label:'Remplacement de la chaudière',by:'Thermique Océan',eq:'chaudiere'}
+  ],
+  docs:[
+   {id:'d1',cat:'Attestations',title:'Attestation d’entretien chaudière',date:ago(398),src:'Taloche',by:'Thermique Océan',eq:'chaudiere',amount:129,cil:'notices'},
+   {id:'d2',cat:'Attestations',title:'Certificat de ramonage',date:ago(300),src:'Taloche',by:'Ramonage Rochelais',eq:'insert',amount:75},
+   {id:'d3',cat:'Factures',title:'Facture · remplacement des fenêtres',date:'2019-05-15',src:'Vous',by:'Menuiserie Atlantique',eq:'fen',amount:9840,cil:'travaux'},
+   {id:'d4',cat:'Garanties',title:'Garantie décennale · fenêtres',date:'2019-05-15',src:'Vous',by:'Menuiserie Atlantique',eq:'fen',until:'2029-05-15',cil:'travaux'},
+   {id:'d5',cat:'Factures',title:'Facture · installation climatisation',date:'2022-06-10',src:'Taloche',by:'Clim’Atlantique',eq:'clim',amount:3450,cil:'travaux'},
+   {id:'d6',cat:'Diagnostics',title:'DPE · classe E',date:'2021-09-14',src:'Données publiques',by:'Observatoire DPE (ADEME)',until:'2031-09-14',cil:'energie'},
+   {id:'d7',cat:'Notices',title:'Notice chaudière ThemaPlus Condens',date:'2016-10-03',src:'Vous',by:'Saunier Duval',eq:'chaudiere',cil:'notices'},
+   {id:'d8',cat:'Plans',title:'Plan du rez-de-chaussée',date:'2015-02-10',src:'Vous',by:'Acte de vente',cil:'plans'},
+   {id:'d9',cat:'Assurances',title:'Assurance habitation 2026',date:'2026-01-01',src:'Vous',by:'Votre assureur',until:'2026-12-31'},
+   {id:'d10',cat:'Notices',title:'Notice climatisation Daikin Perfera',date:'2022-06-10',src:'Taloche',by:'Clim’Atlantique',eq:'clim',cil:'notices'}
+  ],
+  req:[{id:'HP-48213',kind:'devis',title:'Fuite sous l’évier de la cuisine',cat:'Plomberie',date:ago(3),photo:null,desc:'Goutte-à-goutte au niveau du siphon, le bas du meuble est humide.',status:2,
+   quotes:[{pro:'Durand Plomberie',note:4.8,avis:126,price:180,when:fmtDM(inD(3)),line:'Remplacement du siphon et des joints, contrôle du flexible'},
+           {pro:'Atlantique Sanitaire',note:4.6,avis:58,price:165,when:fmtDM(inD(8)),line:'Remplacement du siphon, déplacement inclus'},
+           {pro:'Plomberie des Minimes',note:4.9,avis:211,price:210,when:fmtDM(inD(1)),line:'Recherche de fuite, siphon et flexible neufs'}],chosen:0,split:false,rating:0}],
+  pros:[
+   {id:'p1',name:'Thermique Océan',job:'Chauffagiste · RGE',metier:'chauffagiste',note:4.7,avis:89,phone:'05 46 00 00 01',last:ago(400),eq:'chaudiere',city:'La Rochelle',since:2009},
+   {id:'p2',name:'Clim’Atlantique',job:'Climaticien · QualiPAC',metier:'climaticien',note:4.8,avis:64,phone:'05 46 00 00 02',last:ago(560),eq:'clim',city:'Aytré',since:2014},
+   {id:'p3',name:'Ramonage Rochelais',job:'Ramoneur',metier:'chauffagiste',note:4.9,avis:142,phone:'05 46 00 00 03',last:ago(300),eq:'insert',city:'Lagord',since:2002},
+   {id:'p4',name:'Menuiserie Atlantique',job:'Menuisier · RGE',metier:'menuisier',note:4.6,avis:37,phone:'05 46 00 00 04',last:'2019-05-15',eq:'fen',city:'Périgny',since:1998}
+  ],
+  contracts:[],
+  notifs:[
+   {id:'n1',date:today(),t:'Entretien chaudière en retard',b:'Le dernier entretien date de plus d’un an. Réservez une visite en 2 minutes.',go:'obl-chaudiere',read:false,kind:'late'},
+   {id:'n2',date:ago(1),t:'3 devis reçus',b:'Fuite sous l’évier : comparez les devis de 3 artisans Habitatpresto.',go:'req-HP-48213',read:false,kind:'hp'},
+   {id:'n3',date:ago(2),t:'Coup de froid annoncé',b:'Pensez à purger vos robinets extérieurs avant le gel.',go:'saison',read:false,kind:'info'},
+   {id:'n4',date:ago(9),t:'Nouvel article dans le mag',b:'Préparer sa maison à l’hiver : la checklist en 8 points.',go:'art-a2',read:true,kind:'info'}
+  ],
+  settings:{push:true,email:true,sms:false,j30:true,j7:true,j1:false,season:true,mag:true,offers:false,share:[{who:'Marc Dupont',role:'Co-propriétaire',scope:'Tout le carnet'}]},
+  household:[{n:'Claire Dupont',r:'Propriétaire · administratrice'},{n:'Marc Dupont',r:'Co-propriétaire'}],
+  chat:[], saved:[], photos:[]
+ };
+}
+
+/* ================= état ================= */
+const KEY='bien-chez-moi-demo-v4';
+let S; try{const raw=localStorage.getItem(KEY); S=raw?JSON.parse(raw):null;}catch(e){S=null;}
+if(!S||S.v!==4) S=seed();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){try{const c=JSON.parse(JSON.stringify(S));c.docs.forEach(d=>delete d.img);c.req.forEach(r=>delete r.photo);c.eq.forEach(q=>delete q.photo);c.photos=[];localStorage.setItem(KEY,JSON.stringify(c));}catch(e2){}}};
+const UI={docQ:'',docCat:'Tous',q:'',magCat:'tout',souci:{photo:null,cat:null,desc:''},nr:{p:'Plomberie',d:'',eq:null,photo:null},bk:{task:'ch-ent',o:0,s:0,c:true},lastReq:null,lastRdv:null,onbEq:[1,1,1,1,1,1,0,0],sim:{rev:'jaune',travaux:['combles']}};
+function ensureSeason(){const k=seasonNow(); if(S.season.key!==k){S.season={key:k,items:SEASONS[k].items.map(t=>({t,done:false}))}; save();}}
+ensureSeason();
+
+/* ================= tâches ================= */
+function allTasks(){const o=[];S.eq.forEach(e=>e.tasks.forEach(t=>{const due=addM(t.last,t.every),d=diff(due);o.push({...t,eq:e,due,d,state:d<0?'late':d<=45?'soon':'ok'});}));return o.sort((a,b)=>a.d-b.d);}
+const dueTxt=t=>t.d<0?`En retard de ${-t.d} j`:t.d===0?'Aujourd’hui':t.d<=45?`Dans ${t.d} j`:fmt(t.due,{month:'long',year:'numeric'});
+const chipFor=t=>`<span class="chip ${t.state}">${dueTxt(t)}</span>`;
+function score(){let s=100;allTasks().forEach(t=>{if(t.state==='late')s-=(t.legal&&t.pro)?14:5;else if(t.state==='soon')s-=2;});s+=Math.min(6,S.season.items.filter(i=>i.done).length*2);return Math.max(20,Math.min(100,s));}
+function findTask(id){for(const e of S.eq){const t=e.tasks.find(x=>x.id===id);if(t)return{e,t};}return null;}
+
+/* ================= composants ================= */
+function logo(s){return `<svg width="${s}" height="${s}" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="var(--accent)"/><path d="M9 20l11-9 11 9" fill="none" stroke="var(--on-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 18v11h14V18" fill="none" stroke="var(--on-accent)" stroke-width="3" stroke-linejoin="round"/><path d="M17 24c1.5 2 4.5 2 6 0" fill="none" stroke="var(--warm)" stroke-width="3" stroke-linecap="round"/></svg>`;}
+function taskRow(t){
+ const legal=t.legal?`<a class="chip legal" href="#obl-${t.legal}" style="text-decoration:none">Obligatoire</a>`:'';
+ const act=t.pro?`<button class="btn warm sm" data-a="book" data-id="${t.id}">${t.legal?'Réserver':'Trouver un pro'}</button>`:`<button class="btn ghost sm" data-a="done" data-id="${t.id}">C’est fait</button>`;
+ return `<div class="row"><a class="ico ${t.state==='late'?'d':t.state==='soon'?'w':''}" href="#eq-${t.eq.id}" aria-label="${esc(t.eq.name)}">${ic(t.eq.icon,20)}</a><div class="b"><strong>${esc(t.label)}</strong><span>${esc(t.eq.name)}</span><div class="chips" style="margin-top:3px">${chipFor(t)}${legal}</div></div>${act}</div>`;
+}
+function ringSVG(v){const c=2*Math.PI*36,o=c*(1-v/100),col=v>=80?'var(--ok)':v>=60?'var(--warn)':'var(--danger)';
+ return `<div class="ring"><svg width="84" height="84" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="color-mix(in srgb,var(--bg) 18%,transparent)" stroke-width="8"/><circle cx="42" cy="42" r="36" fill="none" stroke="${col}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${o}" transform="rotate(-90 42 42)"/></svg><b>${v}</b></div>`;}
+function houseArt(){return `<svg width="120" height="84" viewBox="0 0 120 84" aria-hidden="true" style="position:absolute;right:-6px;bottom:-4px"><path d="M14 44L60 10l46 34" fill="none" stroke="var(--warm)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="24" y="40" width="72" height="44" fill="color-mix(in srgb,var(--bg) 14%,transparent)"/><rect x="36" y="52" width="14" height="14" rx="2" fill="color-mix(in srgb,var(--bg) 35%,transparent)"/><rect x="70" y="52" width="14" height="14" rx="2" fill="color-mix(in srgb,var(--bg) 35%,transparent)"/><rect x="53" y="62" width="14" height="22" fill="var(--warm)"/></svg>`;}
+const CATBG={Entretien:'var(--accent-soft)','Énergie':'var(--ok-soft)','Sécurité':'var(--danger-soft)',Saison:'var(--warn-soft)',Travaux:'var(--warm-soft)','Démarches':'var(--surface-2)'};
+const artPic=(a,h)=>`<div class="pic" style="height:${h||110}px;background:${CATBG[a.cat]||'var(--surface-2)'}">${ic(a.icon,44)}</div>`;
+const artCard=a=>`<a class="art" href="#art-${a.id}">${artPic(a)}<div class="tx"><span class="eyebrow">${a.cat} · ${a.min} min</span><b>${esc(a.t)}</b></div></a>`;
+const lrow=(href,icon,t,s,cls,right)=>`<a class="row" href="#${href}"><span class="ico ${cls||''}">${ic(icon,20)}</span><div class="b"><strong>${t}</strong>${s?`<span>${s}</span>`:''}</div>${right||chev}</a>`;
+const DEV_ST=['Envoyée','Artisans contactés','Devis reçus','Devis signé','Travaux terminés'], RESA_ST=['Demandé','RDV confirmé','Visite faite'];
+const isOpen=r=>r.kind==='resa'?r.status<2:r.status<4;
+function reqRow(r){const L=r.kind==='resa'?RESA_ST:DEV_ST,st=r.status>=L.length-1?'ok':(r.status===2&&r.kind==='devis')?'hp':'soon';
+ return `<a class="row" href="#req-${r.id}"><span class="ico ${r.kind==='resa'?'':'w'}">${ic(r.kind==='resa'?'cal':'tool',20)}</span><div class="b"><strong>${esc(r.title)}</strong><span>${r.id} · ${fmt(r.date)}</span></div><span class="chip ${st}">${L[r.status]}</span></a>`;}
+const prog=(n,tot)=>`<div style="display:flex;gap:6px">${[...Array(tot)].map((_,i)=>`<div class="bar" style="flex:1"><i style="width:${n>i?100:0}%"></i></div>`).join('')}</div>`;
+const sw=(k,l,d)=>`<div class="row"><div class="b"><strong>${l}</strong>${d?`<span>${d}</span>`:''}</div><label class="switch"><input type="checkbox" id="sw-${k}" data-a="set" data-k="${k}" ${S.settings[k]?'checked':''} aria-label="${l}"><span></span></label></div>`;
+const demo=`<p class="note">${ic('info',14)}Démo : données d’exemple, aucune demande réelle n’est envoyée.</p>`;
+const prose=b=>`<div class="prose">${b.map(p=>p.startsWith('<')?p:`<p>${p}</p>`).join('')}</div>`;
+const prosFor=m=>{const base=S.pros.filter(p=>p.metier===m);const extra=[['Atelier Martin',4.8,73],['Océan Services Habitat',4.9,190],['Artisans d’Aunis',4.6,51]].map(([n,no,a],i)=>({id:'x'+m+i,name:n+(i?'':' · '+METIERS[m].t),job:METIERS[m].t+' · vérifié',metier:m,note:no,avis:a,phone:'05 46 00 01 0'+i,city:['La Rochelle','Aytré','Puilboreau'][i],since:2010+i*3}));return base.concat(extra).slice(0,4);};
+
+/* ================= routes ================= */
+const R={};
+const def=(k,t,g,p,v)=>{R[k]={t,g,p,v};};
+const TABS=['accueil','entretien','souci','carnet','mag'];
+const cur=()=>{const h=decodeURIComponent(location.hash.slice(1));return resolve(h)?h:'accueil';};
+const go=r=>{if(location.hash.slice(1)===r)render();else location.hash=r;};
+
+function resolve(k){
+ if(R[k]) return R[k];
+ const m=k.match(/^(eq|art|doc|pro|req|obl|diag|saison|aide|metier)-(.+)$/); if(!m) return null;
+ const t=m[1],id=m[2];
+ if(t==='eq'){const e=S.eq.find(x=>x.id===id);return e&&{t:e.name,g:'Ma maison',p:'maison',v:()=>vEq(e)};}
+ if(t==='art'){const a=ART.find(x=>x.id===id);return a&&{t:a.cat,g:'Le mag',p:'mag',v:()=>vArt(a)};}
+ if(t==='doc'){const d=S.docs.find(x=>x.id===id);return d&&{t:d.cat,g:'Carnet',p:'carnet',v:()=>vDoc(d)};}
+ if(t==='pro'){const p=S.pros.find(x=>x.id===id);return p&&{t:p.name,g:'Artisans',p:'artisans',v:()=>vPro(p)};}
+ if(t==='req'){const r=S.req.find(x=>x.id===id);return r&&{t:r.title,g:'Demandes',p:'demandes',v:()=>vReq(r)};}
+ if(t==='obl'){const o=OBL[id];return o&&{t:o.t,g:'Entretien',p:'obligations',v:()=>vObl(id,o)};}
+ if(t==='diag'){const d=DIAG[id];return d&&{t:'Dépannage · '+d.t,g:'Un souci',p:'depannage',v:()=>vDiag(id,d)};}
+ if(t==='saison'){const s=SEASONS[id];return s&&{t:s.name,g:'Entretien',p:'saison',v:()=>vSeason(id,s)};}
+ if(t==='aide'){const a=AIDES[id];return a&&{t:a.t,g:'Énergie',p:'aides',v:()=>vAide(a)};}
+ if(t==='metier'){const mm=METIERS[id];return mm&&{t:mm.t,g:'Artisans',p:'annuaire',v:()=>vMetier(id,mm)};}
+ return null;
+}
+function allRoutes(){
+ const o=Object.keys(R).map(k=>[k,R[k].t,R[k].g]);
+ S.eq.forEach(e=>o.push(['eq-'+e.id,e.name,'Ma maison']));
+ Object.entries(OBL).forEach(([k,v])=>o.push(['obl-'+k,v.t,'Entretien']));
+ Object.entries(SEASONS).forEach(([k,v])=>o.push(['saison-'+k,'Saison · '+v.name,'Entretien']));
+ Object.entries(DIAG).forEach(([k,v])=>o.push(['diag-'+k,'Dépannage · '+v.t,'Un souci']));
+ S.req.forEach(r=>o.push(['req-'+r.id,'Demande · '+r.title,'Demandes']));
+ S.docs.forEach(d=>o.push(['doc-'+d.id,d.title,'Carnet']));
+ Object.entries(AIDES).forEach(([k,v])=>o.push(['aide-'+k,v.t,'Énergie']));
+ S.pros.forEach(p=>o.push(['pro-'+p.id,p.name,'Artisans']));
+ Object.entries(METIERS).forEach(([k,v])=>o.push(['metier-'+k,v.t,'Artisans']));
+ ART.forEach(a=>o.push(['art-'+a.id,a.t,'Le mag']));
+ return o;
+}
+
+/* ---------- Démarrage ---------- */
+def('bienvenue','Bienvenue','Démarrer',null,()=>`${prog(1,6)}
+ <section class="hero" style="padding:24px"><span class="eyebrow">Bienvenue</span><h1 style="font-size:30px">Votre maison, enfin bien suivie.</h1><p class="muted">Entretiens, rappels obligatoires, documents, artisans de confiance : tout au même endroit, gratuitement.</p></section>
+ <div class="list">${[['cal','Les rappels obligatoires','Chaudière, clim, ramonage : on vous prévient à temps'],['doc','Vos documents rangés tout seuls','Factures et attestations arrivent directement des artisans'],['cam','Un souci ? Une photo','Un premier avis, puis des artisans vérifiés'],['book','Le carnet pour la vente','Le carnet d’information du logement, prêt pour le notaire']].map(([i,t,d])=>`<div class="row"><span class="ico">${ic(i,20)}</span><div class="b"><strong>${t}</strong><span>${d}</span></div></div>`).join('')}</div>
+ <a class="btn full" href="#onb-adresse">Commencer avec mon adresse</a><a class="btn full ghost" href="#connexion">J’ai déjà un compte</a>`);
+def('connexion','Connexion','Démarrer','bienvenue',()=>`<div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:10px">${logo(56)}<h1>Bon retour</h1></div>
+ <div class="field"><label for="cx-m">E-mail</label><input class="input" id="cx-m" type="email" value="${esc(S.user.email)}" autocomplete="email"></div>
+ <div class="field"><label for="cx-p">Mot de passe</label><input class="input" id="cx-p" type="password" value="demo-demo" autocomplete="current-password"></div>
+ <a class="btn full" href="#accueil">Se connecter</a><a class="link" href="#mot-de-passe" style="align-self:center">Mot de passe oublié ?</a>
+ <div class="btns"><button class="btn ghost" data-a="toast" data-m="Connexion Apple : disponible dans la version finale">Continuer avec Apple</button><button class="btn ghost" data-a="toast" data-m="Connexion Google : disponible dans la version finale">Continuer avec Google</button></div>
+ <p class="note">${ic('lock',14)}Vous avez un compte Habitatpresto ? Utilisez les mêmes identifiants.</p>`);
+def('mot-de-passe','Mot de passe oublié','Démarrer','connexion',()=>`<h1>Réinitialiser le mot de passe</h1><p class="muted">Nous vous envoyons un lien par e-mail pour en choisir un nouveau.</p>
+ <div class="field"><label for="mp-m">E-mail</label><input class="input" id="mp-m" type="email" value="${esc(S.user.email)}"></div><button class="btn full" data-a="toast" data-m="Lien envoyé, vérifiez votre boîte mail">Envoyer le lien</button>`);
+def('onb-adresse','Votre adresse','Démarrer','bienvenue',()=>`${prog(2,6)}<h1>Quelle est votre adresse ?</h1><p class="muted">Nous récupérons les informations publiques du logement : DPE, année de construction, risques naturels.</p>
+ <div class="field"><label for="onb-adr">Adresse du logement</label><input class="input" id="onb-adr" value="${esc(S.house.address)}"></div>
+ <div class="field"><label for="onb-st">Vous êtes</label><select class="input" id="onb-st"><option>Propriétaire occupant</option><option>Propriétaire bailleur</option><option>Locataire</option></select></div>
+ <button class="btn full" data-a="onbAdr">Rechercher mon logement</button>`);
+def('onb-logement','Votre logement','Démarrer','onb-adresse',()=>`${prog(3,6)}<h1>Nous avons trouvé votre maison</h1>
+ <div class="card"><dl class="kv"><dt>Construite en</dt><dd>${S.house.year}</dd><dt>Surface</dt><dd>${S.house.surface} m²</dd><dt>DPE</dt><dd>${S.house.dpe} · ${fmt(S.house.dpeDate,{month:'short',year:'numeric'})}</dd><dt>Chauffage</dt><dd>Gaz</dd><dt>Risques</dt><dd>Submersion, argiles</dd></dl></div>
+ <p class="note">${ic('info',14)}Sources : Observatoire DPE de l’ADEME, Base de données nationale des bâtiments, Géorisques.</p>
+ <div class="btns"><a class="btn ghost" href="#fiche-logement">Corriger</a><a class="btn" href="#onb-equipements">C’est bien ça</a></div>`);
+def('onb-equipements','Vos équipements','Démarrer','onb-logement',()=>`${prog(4,6)}<h1>Quels équipements avez-vous ?</h1><p class="muted">Nous créons les rappels d’entretien, dont ceux imposés par la loi.</p>
+ <div class="grid2">${['Chaudière gaz','Clim / PAC','Insert ou poêle','Ballon d’eau chaude','VMC','Détecteur de fumée','Panneaux solaires','Fosse septique'].map((t,k)=>`<label class="opt ${UI.onbEq[k]?'on':''}"><input type="checkbox" id="onb-eq-${k}" ${UI.onbEq[k]?'checked':''} style="accent-color:var(--accent)" data-a="onbEq" data-i="${k}"><span class="small" style="font-weight:700">${t}</span></label>`).join('')}</div>
+ <a class="btn full" href="#onb-notifs">Continuer</a>`);
+def('onb-notifs','Vos rappels','Démarrer','onb-equipements',()=>`${prog(5,6)}<h1>Comment voulez-vous être prévenu ?</h1>
+ <div class="list">${sw('push','Notifications','Sur votre téléphone')}${sw('email','E-mail','Un récapitulatif avant chaque échéance')}${sw('sms','SMS','Seulement pour les obligations légales')}</div>
+ <a class="btn full" href="#onb-pret">Continuer</a>`);
+def('onb-pret','C’est prêt','Démarrer','onb-notifs',()=>{const n=UI.onbEq.filter(Boolean).length;return `${prog(6,6)}<section class="card" style="align-items:center;text-align:center;padding:24px">${logo(56)}<h1>Votre carnet est prêt</h1><p class="muted">${n} équipements, ${allTasks().length} rappels créés. 3 points sont à traiter cet hiver, dont 1 obligation légale.</p><a class="btn full" href="#accueil" data-a="toastNav" data-m="Bienvenue dans Bien chez moi">Découvrir ma maison</a></section>`;});
+
+/* ---------- Accueil ---------- */
+def('accueil','Accueil','Au quotidien',null,()=>{
+ const ts=allTasks(),urgent=ts.filter(t=>t.state!=='ok').slice(0,4),sc=score(),late=ts.filter(t=>t.state==='late').length,sd=S.season.items.filter(i=>i.done).length,se=SEASONS[S.season.key],open=S.req.filter(isOpen);
+ const recos=ART.filter(a=>a.eq&&S.eq.some(e=>e.id===a.eq)).slice(0,5);
+ return `<section class="hero"><div style="display:flex;gap:14px;align-items:center">${ringSVG(sc)}<div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span class="eyebrow">Santé de la maison</span><h1 style="font-size:22px">${sc>=80?'Tout roule':sc>=60?'Quelques points à traiter':'Votre maison a besoin de vous'}</h1><p class="small muted">${late?`${late} entretien${late>1?'s':''} en retard`:'Aucun retard'} · ${sd}/${S.season.items.length} gestes de saison</p></div></div>
+  <a class="row" href="#maison" style="background:color-mix(in srgb,var(--bg) 10%,transparent);border-radius:16px;border:0;padding:12px 130px 12px 12px;position:relative;min-height:84px"><div class="b"><strong>${esc(S.house.address.split(',')[0])}</strong><span style="color:inherit;opacity:.75">${S.house.type} · ${S.house.year} · ${S.house.surface} m² · DPE ${S.house.dpe}</span></div>${houseArt()}</a></section>
+ <a class="row" href="#recherche" style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px">${ic('search',20)}<span class="muted">Rechercher une facture, un équipement, un conseil…</span></a>
+ <section class="sec"><div class="sec-h"><h2>À faire maintenant</h2><a href="#entretien">Tout voir</a></div><div class="list">${urgent.length?urgent.map(taskRow).join(''):`<div class="empty">${ic('check',28)}<p>Rien d’urgent.</p></div>`}</div></section>
+ ${open.length?`<section class="sec"><div class="sec-h"><h2>Demandes en cours</h2><a href="#demandes">Suivre</a></div><div class="list">${open.map(reqRow).join('')}</div></section>`:''}
+ <section class="grid3">${[['souci','cam','Signaler un souci','w'],['carnet','doc','Mes documents'],['demandes','tool','Devis et travaux'],['energie','leaf','Énergie et aides'],['artisans','user','Mes artisans'],['assistant','chat','Poser une question'],['calendrier','cal','Calendrier'],['urgences','phone','Urgences','d'],['plan-app','grid','Tous les écrans']].map(([h,i,t,c])=>`<a class="tile" href="#${h}"><span class="ico ${c||''}">${ic(i,20)}</span>${t}</a>`).join('')}</section>
+ <section class="card" style="gap:10px"><div class="sec-h"><div><span class="eyebrow">${se.name} · ${MONTHS[T0.getMonth()]}</span><h2>Les gestes de saison</h2></div><a href="#saison">Cocher</a></div><div class="bar"><i style="width:${Math.round(sd/S.season.items.length*100)}%"></i></div><p class="small muted">${S.season.items.filter(i=>!i.done).slice(0,2).map(i=>esc(i.t)).join(' · ')}</p></section>
+ <section class="banner w"><span class="ico w">${ic('shield',20)}</span><div><b>Contrat d’entretien chaudière</b><p class="small">Visite annuelle, attestation rangée dans le carnet, déplacement offert en cas de panne. <b>14,90 €/mois</b>.</p><div><a class="btn warm sm" href="#contrat-entretien">Découvrir</a></div></div></section>
+ <section class="sec"><div class="sec-h"><h2>Pour votre maison</h2><a href="#mag">Le mag</a></div><div class="hscroll">${recos.map(artCard).join('')}</div></section>
+ <p class="foot">Bien chez moi · un service Habitatpresto</p>`;});
+def('alertes','Alertes','Au quotidien','accueil',()=>`<div style="display:flex;justify-content:flex-end"><button class="link" data-a="readAll">Tout marquer comme lu</button></div>
+ <div class="list">${S.notifs.map(n=>`<a class="row" href="#${n.go}" data-a="notif" data-id="${n.id}"><span class="ico ${n.kind==='late'?'d':n.kind==='hp'?'w':''}">${ic(n.kind==='late'?'alert':n.kind==='hp'?'tool':'bell',20)}</span><div class="b"><strong>${n.read?'':'<span style="color:var(--warm)">● </span>'}${esc(n.t)}</strong><span>${esc(n.b)}</span><span>${fmt(n.date,{day:'numeric',month:'long'})}</span></div></a>`).join('')}</div>
+ <a class="link" href="#notifications">Réglages des notifications</a>`);
+def('urgences','Urgences','Au quotidien','accueil',()=>`<div class="banner d"><span class="ico d">${ic('alert',20)}</span><div><b>En cas de danger immédiat, appelez le 112 ou le 18.</b></div></div>
+ <div class="list">${[['flame','Urgence Sécurité Gaz','0 800 47 33 33','Odeur de gaz, 24 h/24, gratuit'],['plug','Enedis · dépannage électricité','09 72 67 50 17','Coupure de courant en Charente-Maritime'],['drop','Fuite d’eau sur le réseau','Sur votre facture d’eau','Service des eaux de votre commune'],['alert','Pompiers','18','Incendie, accident'],['user','SAMU','15','Urgence médicale'],['phone','Numéro d’urgence européen','112','Depuis n’importe quel téléphone']].map(([i,t,n,d])=>`<div class="row"><span class="ico d">${ic(i,20)}</span><div class="b"><strong>${t}</strong><span>${d}</span></div><button class="btn ghost sm num" data-a="copy" data-t="${n}">${n}</button></div>`).join('')}</div>
+ <section class="sec"><h2>Les bons réflexes</h2><div class="list">${lrow('art-a9','flame','Odeur de gaz','Les 5 gestes à faire')}${lrow('diag-plomberie','drop','Fuite d’eau','Couper l’eau et limiter les dégâts')}${lrow('diag-electricite','plug','Panne électrique','Que vérifier au tableau')}${lrow('diag-chauffage','flame','Chaudière en panne','Avant d’appeler un chauffagiste')}</div></section>
+ <a class="btn full warm" href="#nouvelle-demande" data-a="prepReq" data-p="Dépannage urgent">Trouver un artisan en urgence</a>`);
+def('recherche','Recherche','Au quotidien','accueil',()=>{const q=UI.q.trim().toLowerCase();
+ const hit=s=>s.toLowerCase().includes(q);
+ const res=q?[...S.eq.filter(e=>hit(e.name+' '+e.model)).map(e=>lrow('eq-'+e.id,e.icon,esc(e.name),'Équipement')),...S.docs.filter(d=>hit(d.title+' '+(d.by||''))).map(d=>lrow('doc-'+d.id,'doc',esc(d.title),'Document · '+fmt(d.date))),...ART.filter(a=>hit(a.t)).map(a=>lrow('art-'+a.id,a.icon,esc(a.t),'Article')),...Object.entries(OBL).filter(([k,o])=>hit(o.t)).map(([k,o])=>lrow('obl-'+k,o.icon,o.t,'Obligation')),...Object.entries(METIERS).filter(([k,m])=>hit(m.t)).map(([k,m])=>lrow('metier-'+k,m.icon,m.t,'Artisans'))]:[];
+ return `<div style="position:relative"><input class="input" id="q" data-in="q" value="${esc(UI.q)}" placeholder="Facture, chaudière, fissure…" style="padding-left:40px" aria-label="Rechercher"><span style="position:absolute;left:12px;top:12px;color:var(--muted)">${ic('search',20)}</span></div>
+ ${q?(res.length?`<div class="list">${res.join('')}</div>`:`<div class="card empty">${ic('search',26)}<p>Aucun résultat pour « ${esc(UI.q)} ».</p><a class="btn sm" href="#assistant">Demander à l’assistant</a></div>`):`<div class="chips">${['chaudière','facture','fissure','clim','garantie','aides'].map(s=>`<button class="chip" data-a="setQ" data-q="${s}">${s}</button>`).join('')}</div>`}`;});
+def('plan-app','Tous les écrans','Au quotidien','accueil',()=>{const all=allRoutes(),g={};all.forEach(([k,t,gr])=>(g[gr]=g[gr]||[]).push([k,t]));
+ return `<section class="hero"><span class="eyebrow">Plan de l’application</span><h1 style="font-size:28px">${all.length} écrans</h1><p class="muted">Chaque ligne ouvre l’écran. Les fiches (équipements, documents, articles, artisans) se créent à partir des données de la maison.</p></section>
+ ${Object.entries(g).map(([gr,l])=>`<section class="sec"><div class="sec-h"><h2>${gr}</h2><span class="chip">${l.length}</span></div><div class="list plan">${l.map(([k,t])=>`<a href="#${k}"><b style="font-weight:600;min-width:0">${esc(t)}</b><span>#${k}</span></a>`).join('')}</div></section>`).join('')}`;});
+
+/* ---------- Entretien ---------- */
+const entSeg=on=>`<div class="seg">${[['entretien','À venir'],['calendrier','Calendrier'],['obligations','Obligations'],['saison','Saison'],['historique','Historique'],['rappels','Rappels']].map(([k,l])=>`<a href="#${k}" class="${on===k?'on':''}">${l}</a>`).join('')}</div>`;
+def('entretien','Entretien','Entretien',null,()=>{const ts=allTasks();
+ return entSeg('entretien')+[['Mieux vaut ne pas attendre',ts.filter(t=>t.state==='late')],['Dans les 45 jours',ts.filter(t=>t.state==='soon')],['Plus tard',ts.filter(t=>t.state==='ok')]].filter(x=>x[1].length).map(([h,l])=>`<section class="sec"><h2>${h}</h2><div class="list">${l.map(taskRow).join('')}</div></section>`).join('')+
+ `<div class="banner a">${ic('bell',20)}<div class="small"><b>Rappels activés</b> ${[S.settings.j30&&'30 jours',S.settings.j7&&'7 jours',S.settings.j1&&'la veille'].filter(Boolean).join(', ')||'aucun'} avant chaque échéance. <a href="#rappels">Modifier</a></div></div>`;});
+def('calendrier','Calendrier','Entretien','entretien',()=>{
+ const ts=allTasks(),y=T0.getFullYear(),m=T0.getMonth(),first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();
+ const dueDays=new Set(ts.filter(t=>{const d=new Date(t.due);return d.getMonth()===m&&d.getFullYear()===y;}).map(t=>new Date(t.due).getDate()));
+ const months=[...Array(12)].map((_,i)=>{const d=new Date(y,m+i,1);return{d,items:[]};});
+ ts.forEach(t=>{let due=t.state==='late'?today():t.due,n=0;while(n<24){const dd=new Date(due),idx=(dd.getFullYear()-y)*12+dd.getMonth()-m;if(idx>11)break;if(idx>=0)months[idx].items.push(t);due=addM(due,t.every);n++;}});
+ return entSeg('calendrier')+`<section class="card"><div class="sec-h"><h2 style="text-transform:capitalize">${MONTHS[m]} ${y}</h2><span class="chip">${dueDays.size} échéance${dueDays.size>1?'s':''}</span></div>
+  <div class="cal">${['L','M','M','J','V','S','D'].map(d=>`<span class="h">${d}</span>`).join('')}${'<span></span>'.repeat(start)}${[...Array(days)].map((_,i)=>`<span class="${i+1===T0.getDate()?'t':dueDays.has(i+1)?'x':'d'}">${i+1}</span>`).join('')}</div></section>
+ <section class="sec"><h2>Les 12 prochains mois</h2>${months.map(({d,items})=>{const u=[...new Map(items.filter(t=>t.every>1).map(t=>[t.id,t])).values()];return `<div class="card" style="gap:6px"><b style="text-transform:capitalize">${MONTHS[d.getMonth()]} ${d.getFullYear()}</b>${u.length?u.map(t=>`<div style="display:flex;justify-content:space-between;gap:8px;font-size:13.5px"><span style="min-width:0">${esc(t.label)} · <span class="muted">${esc(t.eq.name)}</span></span>${t.legal?'<span class="chip legal">Obligatoire</span>':''}</div>`).join(''):'<span class="small muted">Rien de prévu, hors gestes mensuels.</span>'}</div>`;}).join('')}</section>`;});
+def('obligations','Obligations','Entretien','entretien',()=>{const ts=allTasks();
+ return entSeg('obligations')+`<p class="muted">Ce que la loi impose pour votre logement, et où vous en êtes.</p>
+ <div class="list">${Object.entries(OBL).map(([k,o])=>{const t=o.task&&ts.find(x=>x.id===o.task);return lrow('obl-'+k,o.icon,o.t,o.freq+(t?'':' · non concerné ou à vérifier'),t&&t.state==='late'?'d':t?'':'n',t?chipFor(t):chev);}).join('')}</div>`;});
+def('saison','Saison','Entretien','entretien',()=>{const se=SEASONS[S.season.key];
+ return entSeg('saison')+`<div class="card"><div><span class="eyebrow">${se.name}</span><h2>Votre checklist de saison</h2></div>
+ <div style="display:flex;flex-direction:column;gap:10px">${S.season.items.map((it,i)=>`<label class="check"><input type="checkbox" id="se-${i}" data-a="season" data-i="${i}" ${it.done?'checked':''}><span style="${it.done?'text-decoration:line-through;color:var(--muted)':''}">${esc(it.t)}</span></label>`).join('')}</div>
+ <a class="btn ghost sm" href="#art-a2" style="align-self:flex-start">Lire la checklist complète</a></div>
+ <section class="sec"><h2>Toutes les saisons</h2><div class="list">${Object.entries(SEASONS).map(([k,s])=>lrow('saison-'+k,s.icon,s.name,s.items.length+' gestes'+(k===S.season.key?' · en cours':''))).join('')}</div></section>`;});
+def('historique','Historique','Entretien','entretien',()=>{const h=[...S.history].sort((a,b)=>b.date.localeCompare(a.date));
+ return entSeg('historique')+`<div class="card"><div class="steps">${h.map(x=>`<div class="step done"><span class="pt">${ic('check',14)}</span><div style="display:flex;flex-direction:column;gap:2px"><b>${esc(x.label)}</b><span class="small muted">${fmt(x.date)}${x.by?' · '+esc(x.by):''}</span></div></div>`).join('')}</div></div>`;});
+def('rappels','Rappels','Entretien','entretien',()=>entSeg('rappels')+`<section class="sec"><h2>Quand vous prévenir</h2><div class="list">${sw('j30','30 jours avant')}${sw('j7','7 jours avant')}${sw('j1','La veille')}</div></section>
+ <section class="sec"><h2>Par quel moyen</h2><div class="list">${sw('push','Notifications')}${sw('email','E-mail')}${sw('sms','SMS','Obligations légales seulement')}</div></section>
+ <section class="sec"><h2>Rappels par équipement</h2><div class="list">${S.eq.map(e=>lrow('eq-'+e.id,e.icon,esc(e.name),e.tasks.length+' rappel'+(e.tasks.length>1?'s':''))).join('')}</div></section>`);
+
+/* ---------- Maison ---------- */
+def('maison','Ma maison','Ma maison','accueil',()=>{const h=S.house;
+ return `<section class="hero" style="min-height:150px"><span class="eyebrow">${esc(h.status)}</span><h1 style="max-width:70%">${esc(h.address.split(',')[0])}</h1><p class="small muted">${esc(h.address.split(',')[1]||'')}</p>${houseArt()}</section>
+ <section class="grid3">${[['fiche-logement','home','Fiche du logement'],['donnees-publiques','map','Données publiques'],['risques','alert','Risques naturels'],['pieces','grid','Pièces et plan'],['photos','cam','Photos'],['dpe','leaf','DPE']].map(([k,i,t])=>`<a class="tile" href="#${k}"><span class="ico">${ic(i,20)}</span>${t}</a>`).join('')}</section>
+ <section class="card"><dl class="kv"><dt>Type</dt><dd>${h.type}</dd><dt>Construction</dt><dd>${h.year}</dd><dt>Surface</dt><dd>${h.surface} m² · ${h.rooms} pièces</dd><dt>Chauffage</dt><dd>${h.heating}</dd><dt>DPE</dt><dd><span class="chip" style="background:${DPE_COL[h.dpe]};color:#1d1d1d">${h.dpe} · ${h.dpeVal} kWh/m²/an</span></dd></dl></section>
+ <section class="sec"><div class="sec-h"><h2>Mes équipements</h2><a href="#ajouter-equipement">+ Ajouter</a></div>
+ <div class="list">${S.eq.map(e=>{const t=allTasks().filter(x=>x.eq.id===e.id)[0];return lrow('eq-'+e.id,e.icon,esc(e.name),esc(e.model)+' · '+(T0.getFullYear()-e.year)+' ans',t&&t.state==='late'?'d':'',t?chipFor(t):chev);}).join('')}</div></section>`;});
+def('fiche-logement','Fiche du logement','Ma maison','maison',()=>{const h=S.house,f=(k,l,t)=>`<div class="field"><label for="fl-${k}">${l}</label><input class="input" id="fl-${k}" ${t?'type="number"':''} value="${esc(h[k])}"></div>`;
+ return `<p class="muted">Corrigez ce qui ne correspond pas : les rappels et conseils s’adaptent.</p>${f('address','Adresse')}${f('type','Type de logement')}<div class="grid2">${f('year','Année',1)}${f('surface','Surface (m²)',1)}${f('rooms','Pièces',1)}${f('levels','Niveaux',1)}</div>${f('heating','Chauffage')}${f('ecs','Eau chaude')}${f('walls','Murs')}${f('roof','Toiture et combles')}${f('windows','Fenêtres')}${f('sanit','Assainissement')}
+ <button class="btn full" data-a="saveHouse">Enregistrer</button>`;});
+def('donnees-publiques','Données publiques','Ma maison','maison',()=>{const h=S.house;
+ return `<p class="muted">Ce que les bases publiques savent de votre adresse. Récupéré une seule fois, rien n’est partagé.</p>
+ <div class="list">${[['leaf','DPE n° '+h.dpeNum,'Observatoire DPE · ADEME · '+fmt(h.dpeDate)+' · classe '+h.dpe],['home','Bâtiment de '+h.year,'Base de données nationale des bâtiments · murs en parpaing, 2 niveaux'],['alert','Risques naturels','Géorisques · submersion marine, argiles, séisme zone 3'],['map','Parcelle cadastrale','Cadastre · '+h.land+' m² de terrain'],['euro','Ventes récentes du quartier','Demandes de valeurs foncières · disponible dans la version finale']].map(([i,t,d])=>`<div class="row"><span class="ico">${ic(i,20)}</span><div class="b"><strong>${t}</strong><span>${d}</span></div></div>`).join('')}</div>
+ <span class="chip" style="align-self:flex-start">Données d’exemple</span>`;});
+def('risques','Risques naturels','Ma maison','maison',()=>`<p class="muted">Selon Géorisques, pour le 14 allée des Tamaris. À joindre à l’état des risques lors d’une vente ou d’une location.</p>
+ ${[['drop','Submersion marine','Exposé','late','Commune couverte par un plan de prévention des risques littoraux. Gardez les documents importants à l’étage et repérez le robinet d’arrêt.'],['crack','Retrait-gonflement des argiles','Moyen','soon','Les sécheresses peuvent provoquer des fissures. Photographiez les fissures chaque saison.'],['alert','Séisme','Zone 3, modérée','soon','Règles parasismiques pour les constructions neuves et certains travaux.'],['wind','Tempête','Littoral exposé','soon','Vérifiez la toiture après chaque coup de vent.'],['smoke','Radon','Faible','ok','Aucune mesure particulière.']].map(([i,t,l,c,d])=>`<div class="card" style="gap:8px"><div class="sec-h"><b style="display:flex;gap:8px;align-items:center">${ic(i,20)}${t}</b><span class="chip ${c}">${l}</span></div><p class="small">${d}</p></div>`).join('')}
+ <a class="btn ghost full" href="https://www.georisques.gouv.fr" target="_blank" rel="noopener">Ouvrir Géorisques</a>`);
+def('pieces','Pièces et plan','Ma maison','maison',()=>`<section class="card"><h2>Plan simplifié · rez-de-chaussée et étage</h2>
+ <div class="floor"><div style="grid-column:span 3;grid-row:span 2">Séjour 34 m²</div><div style="grid-column:span 2">Cuisine</div><div>WC</div><div style="grid-column:span 2">Cellier</div><div>Entrée</div><div style="grid-column:span 2">Chambre 1</div><div style="grid-column:span 2">Chambre 2</div><div style="grid-column:span 2">Chambre 3</div><div style="grid-column:span 2">Salle de bains</div><div style="grid-column:span 4">Couloir</div></div>
+ <a class="btn ghost sm" href="#doc-d8" style="align-self:flex-start">Voir le plan d’origine</a></section>
+ <div class="list">${S.rooms.map(([n,s,e])=>`<div class="row"><div class="b"><strong>${n}</strong><span>${e||'—'}</span></div><span class="chip num">${s} m²</span></div>`).join('')}</div>
+ <p class="small muted">Total : ${S.rooms.reduce((a,r)=>a+r[1],0)} m² mesurés.</p>`);
+def('photos','Photos','Ma maison','maison',()=>{const imgs=[...S.photos,...S.docs.filter(d=>d.img).map(d=>d.img),...S.eq.filter(e=>e.photo).map(e=>e.photo)];
+ return `<p class="muted">Avant et après travaux, plaques d’équipements, fissures à surveiller.</p><div class="gal"><label for="f-gal" style="cursor:pointer;border:2px dashed var(--line);background:var(--surface)">${ic('plus',28)}</label>${imgs.map(s=>`<div><img src="${s}" alt="Photo du logement"></div>`).join('')}${imgs.length?'':['Façade nord','Fissure · mars','Toiture'].map(t=>`<div style="flex-direction:column;gap:4px;font-size:11px;text-align:center">${ic('cam',24)}${t}</div>`).join('')}</div>`;});
+def('ajouter-equipement','Ajouter un équipement','Ma maison','maison',()=>`<div class="field"><label for="ae-t">Type</label><select class="input" id="ae-t"><option value="pac">Pompe à chaleur air-eau</option><option value="solaire">Panneaux solaires</option><option value="fosse">Fosse septique</option><option value="adou">Adoucisseur d’eau</option><option value="portail">Portail motorisé</option><option value="piscine">Piscine</option></select></div>
+ <div class="field"><label for="ae-m">Marque et modèle</label><input class="input" id="ae-m" placeholder="Ex. : Atlantic Alféa"></div><div class="field"><label for="ae-y">Année d’installation</label><input class="input" id="ae-y" type="number" value="${T0.getFullYear()}"></div>
+ <label for="f-eqphoto" class="drop" data-a="eqPhotoFor" data-id="new">${ic('cam',28)}<b>Photographier la plaque signalétique</b><span class="small muted">Nous lisons la marque et le modèle pour vous</span></label>
+ <button class="btn full" data-a="saveEq">Ajouter et créer les rappels</button>`);
+function vEq(e){const ts=allTasks().filter(t=>t.eq.id===e.id),docs=S.docs.filter(d=>d.eq===e.id),hist=S.history.filter(h=>h.eq===e.id),pro=S.pros.find(p=>p.eq===e.id),lt=ts.find(t=>t.legal);
+ return `${e.photo?`<img class="thumb" src="${e.photo}" alt="Plaque signalétique">`:`<label for="f-eqphoto" class="drop" data-a="eqPhotoFor" data-id="${e.id}">${ic('cam',30)}<b>Photographier la plaque signalétique</b><span class="small muted">Marque, modèle et numéro de série pour l’artisan</span></label>`}
+ <div class="card"><dl class="kv"><dt>Modèle</dt><dd>${esc(e.model)}</dd><dt>Installé en</dt><dd>${e.year} · ${T0.getFullYear()-e.year} ans</dd><dt>Emplacement</dt><dd>${esc(e.room)}</dd>${e.serial?`<dt>N° de série</dt><dd class="num">${e.serial}</dd>`:''}${e.warranty?`<dt>Garantie</dt><dd>jusqu’au ${fmt(e.warranty)}</dd>`:''}</dl></div>
+ ${lt?`<a class="banner a" href="#obl-${lt.legal}" style="text-decoration:none;color:inherit"><span class="ico">${ic('shield',20)}</span><div class="small"><b>Entretien obligatoire · ${OBL[lt.legal].freq.toLowerCase()}</b>${esc(OBL[lt.legal].ref)}</div></a>`:''}
+ <section class="sec"><h2>Entretien</h2><div class="list">${ts.map(taskRow).join('')}</div></section>
+ ${pro?`<section class="sec"><h2>Artisan habituel</h2><div class="list">${lrow('pro-'+pro.id,'user',esc(pro.name),esc(pro.job)+' · ★ '+pro.note.toLocaleString('fr-FR'))}</div></section>`:''}
+ <section class="sec"><h2>Documents</h2>${docs.length?`<div class="list">${docs.map(d=>lrow('doc-'+d.id,'doc',esc(d.title),fmt(d.date))).join('')}</div>`:'<p class="small muted">Aucun document pour cet équipement.</p>'}</section>
+ ${hist.length?`<section class="sec"><h2>Historique</h2><div class="card"><div class="steps">${hist.map(h=>`<div class="step done"><span class="pt">${ic('check',14)}</span><div><b class="small">${esc(h.label)}</b><p class="small muted">${fmt(h.date)} · ${esc(h.by||'')}</p></div></div>`).join('')}</div></div></section>`:''}
+ <div class="btns"><a class="btn warm" href="#nouvelle-demande" data-a="prepReq" data-p="${esc('Dépannage · '+e.name)}" data-eq="${e.id}">Signaler une panne</a>${e.tasks.find(t=>t.pro)?`<button class="btn ghost" data-a="book" data-id="${e.tasks.find(t=>t.pro).id}">Entretien</button>`:''}</div>`;}
+
+/* ---------- Un souci / demandes ---------- */
+def('souci','Un souci ?','Un souci',null,()=>{const s=UI.souci;
+ return `<a class="banner d" href="#urgences" style="text-decoration:none;color:inherit"><span class="ico d">${ic('alert',20)}</span><div class="small"><b>Odeur de gaz ?</b> Sortez, n’allumez rien, appelez le <b class="num">0 800 47 33 33</b>. Autres urgences ›</div></a>${prog(1,3)}
+ <div><h1>Montrez-nous le problème</h1><p class="muted">Une photo suffit. Nous vous disons à quoi ça ressemble et quel artisan il vous faut.</p></div>
+ ${s.photo?`<img class="thumb" src="${s.photo}" alt="Votre photo"><div class="btns"><label for="f-photo" class="btn ghost sm">Changer la photo</label><button class="btn ghost sm" data-a="souciNoPhoto">Retirer</button></div>`:`<label for="f-photo" class="drop">${ic('cam',36)}<b>Prendre ou choisir une photo</b><span class="small muted">Depuis votre téléphone ou votre ordinateur</span></label><button class="link" data-a="samplePhoto" style="align-self:center">Utiliser une photo d’exemple</button>`}
+ <section class="sec"><h2>De quoi s’agit-il ?</h2><div class="grid2">${Object.entries(DIAG).map(([k,d])=>`<button class="opt ${s.cat===k?'on':''}" data-a="souciCat" data-c="${k}"><span class="ico">${ic(d.icon,20)}</span><b class="small">${d.t}</b></button>`).join('')}</div></section>
+ <div class="field"><label for="s-desc">En quelques mots</label><textarea class="input" id="s-desc" data-in="souciDesc" placeholder="Ex. : de l’eau coule sous l’évier depuis ce matin">${esc(s.desc)}</textarea></div>
+ <a class="btn full warm" href="#souci-avis" ${s.cat?'':'aria-disabled="true" style="opacity:.45;pointer-events:none"'}>Analyser</a>
+ <a class="link" href="#depannage" style="align-self:center">Voir les guides de dépannage</a>`;});
+def('souci-avis','Premier avis','Un souci','souci',()=>{const s=UI.souci,D=DIAG[s.cat||'plomberie'];
+ return `${prog(2,3)}${s.photo?`<img class="thumb" src="${s.photo}" alt="Votre photo">`:''}
+ <div class="card"><span class="eyebrow">Premier avis · ${D.t}</span><h2 style="font-size:20px">${D.title}</h2><p class="small">${D.what}</p><dl class="kv"><dt>Urgence</dt><dd><span class="chip ${D.urg==='Élevée'?'late':D.urg==='Moyenne'?'soon':'ok'}">${D.urg}</span></dd><dt>Artisan conseillé</dt><dd><a href="#metier-${D.job}">${METIERS[D.job].t}</a></dd><dt>Prix habituel</dt><dd>${D.price}</dd></dl></div>
+ <div class="card"><b>À faire tout de suite</b><ul class="ul">${D.now.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+ <p class="note">${ic('alert',14)}Avis indicatif établi à partir de votre description. Seul un professionnel sur place peut poser un diagnostic.</p>
+ <a class="btn full warm" href="#nouvelle-demande" data-a="souciSend">Recevoir des devis d’artisans Habitatpresto</a>
+ <div class="btns"><button class="btn ghost" data-a="souciKeep">Garder dans le carnet</button><a class="btn ghost" href="#souci">Modifier</a></div>`;});
+def('depannage','Guides de dépannage','Un souci','souci',()=>`<p class="muted">Les premiers gestes avant l’arrivée d’un artisan.</p><div class="list">${Object.entries(DIAG).map(([k,d])=>lrow('diag-'+k,d.icon,d.t,d.title,d.urg==='Élevée'?'d':'')).join('')}</div>`);
+function vDiag(k,d){return `<div class="card"><span class="eyebrow">${d.t}</span><h2 style="font-size:20px">${d.title}</h2><p>${d.what}</p><dl class="kv"><dt>Urgence habituelle</dt><dd>${d.urg}</dd><dt>Prix habituel</dt><dd>${d.price}</dd></dl></div>
+ <div class="card"><b>Les premiers gestes</b><ul class="ul">${d.now.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+ <div class="list">${lrow('metier-'+d.job,METIERS[d.job].icon,'Trouver un '+METIERS[d.job].t.toLowerCase(),'Artisans vérifiés près de chez vous')}</div>
+ <div class="btns"><a class="btn warm" href="#nouvelle-demande" data-a="prepReq" data-p="${esc(d.presta)}">Demander un devis</a><button class="btn ghost" data-a="souciFrom" data-c="${k}">Envoyer une photo</button></div>`;}
+def('demandes','Mes demandes','Demandes','accueil',()=>{const open=S.req.filter(isOpen),done=S.req.filter(r=>!isOpen(r));
+ return `<div class="banner w"><span class="ico w">${ic('tool',20)}</span><div><b>Un besoin ? Jusqu’à 3 artisans vérifiés vous répondent.</b><p class="small">Gratuit et sans engagement, transmis aux artisans Habitatpresto près de chez vous.</p><div><a class="btn warm sm" href="#nouvelle-demande" data-a="prepReq" data-p="Plomberie">Nouvelle demande</a></div></div></div>
+ <section class="sec"><h2>En cours</h2>${open.length?`<div class="list">${open.map(reqRow).join('')}</div>`:`<div class="card empty">${ic('check',26)}<p>Aucune demande en cours.</p></div>`}</section>
+ ${done.length?`<section class="sec"><h2>Terminées</h2><div class="list">${done.map(reqRow).join('')}</div></section>`:''}
+ <div class="list">${lrow('contrats','shield','Mes contrats d’entretien',S.contracts.length?S.contracts.length+' actif':'Aucun contrat')}${lrow('annuaire','users','Trouver un artisan par métier','8 métiers')}</div>
+ <section class="card"><b>Comment ça marche</b><div class="steps">${['Vous décrivez le besoin, avec une photo si vous voulez','Jusqu’à 3 artisans Habitatpresto vous rappellent','Vous comparez les devis et signez en ligne','Paiement en 4 fois possible, l’artisan est payé tout de suite','La facture et la garantie se rangent dans votre carnet'].map(x=>`<div class="step done"><span class="pt">${ic('check',14)}</span><span class="small" style="padding-top:2px">${x}</span></div>`).join('')}</div></section>`;});
+def('nouvelle-demande','Nouvelle demande','Demandes','demandes',()=>{const n=UI.nr,P2=['Entretien de chaudière gaz','Dépannage de chaudière','Recherche de fuite','Plomberie','Dépannage électrique','Réparation de toiture','Isolation des combles','Installation de pompe à chaleur','Réglage de menuiseries','Peinture','Diagnostic de fissure','Dépannage urgent','Autre'],opts=[...new Set([n.p,...P2])];
+ return `${n.photo?`<img class="thumb" src="${n.photo}" alt="Photo jointe">`:''}
+ <div class="field"><label for="nr-p">Prestation</label><select class="input" id="nr-p">${opts.map(o=>`<option ${o===n.p?'selected':''}>${esc(o)}</option>`).join('')}</select></div>
+ <div class="field"><label for="nr-d">Description</label><textarea class="input" id="nr-d">${esc(n.d)}</textarea></div>
+ <div class="field"><label for="nr-w">Quand ?</label><select class="input" id="nr-w"><option>Dès que possible</option><option>Dans les 15 jours</option><option>Dans le mois</option><option>Je prépare un projet</option></select></div>
+ <div class="field"><label for="nr-b">Budget envisagé</label><select class="input" id="nr-b"><option>Je ne sais pas</option><option>Moins de 500 €</option><option>500 à 2 000 €</option><option>2 000 à 10 000 €</option><option>Plus de 10 000 €</option></select></div>
+ <div class="card" style="gap:6px"><span class="eyebrow">Envoyé avec votre demande</span><span class="small">${esc(S.house.address)} · ${S.house.type} de ${S.house.year}</span><span class="small">${esc(S.user.first)} ${esc(S.user.last)} · ${esc(S.user.phone)}</span>${n.eq?`<span class="small">Fiche équipement : ${esc((S.eq.find(x=>x.id===n.eq)||{}).model||'')}</span>`:''}</div>
+ <label class="check"><input type="checkbox" id="nr-ok" checked>J’accepte d’être rappelé(e) par 3 artisans Habitatpresto au maximum pour cette demande.</label>
+ <button class="btn full warm" data-a="sendReq">Envoyer ma demande</button>${demo}`;});
+def('demande-envoyee','Demande envoyée','Demandes','demandes',()=>{const r=S.req.find(x=>x.id===UI.lastReq)||S.req[0];
+ return `<section class="card" style="align-items:center;text-align:center;padding:24px"><span class="ico w" style="width:56px;height:56px">${ic('check',30)}</span><h1>C’est parti</h1><p class="muted">Demande ${r.id} · ${esc(r.title)}</p><p class="small">Jusqu’à 3 artisans vérifiés près de chez vous vont vous rappeler. Leurs devis arriveront ici, en général sous 48 h.</p></section>
+ <a class="btn full" href="#req-${r.id}">Suivre ma demande</a><a class="btn full ghost" href="#accueil">Retour à l’accueil</a>`;});
+function vReq(r){const L=r.kind==='resa'?RESA_ST:DEV_ST,done=i=>i<r.status||(i===L.length-1&&r.status===i);
+ const tl=`<div class="card"><div class="steps">${L.map((l,i)=>`<div class="step ${done(i)?'done':i===r.status?'cur':''}"><span class="pt">${done(i)?ic('check',14):''}</span><span class="small" style="padding-top:2px;${i>r.status?'color:var(--muted)':'font-weight:700'}">${l}</span></div>`).join('')}</div></div>`;
+ let b='';
+ if(r.kind==='resa'){b=`<div class="card"><dl class="kv"><dt>Artisan</dt><dd>${esc(r.pro)}</dd><dt>Date</dt><dd>${esc(r.when)}</dd><dt>Prix</dt><dd>${r.contract?'Inclus au contrat':r.price+' €'}</dd></dl></div>`+(r.status<2?`<button class="btn full" data-a="visitDone" data-id="${r.id}">Simuler la fin de la visite</button><button class="btn full ghost" data-a="toast" data-m="L’artisan a été prévenu du changement">Déplacer le rendez-vous</button>`:`<div class="banner a">${ic('doc',20)}<div class="small">Attestation rangée dans votre carnet. Prochain entretien programmé.</div></div>`);}
+ else{
+  if(r.desc)b+=`<p class="small muted">${esc(r.desc)}</p>`; if(r.photo)b+=`<img class="thumb" src="${r.photo}" alt="Photo jointe">`;
+  if(r.status<2)b+=`<div class="card empty">${ic('clock',26)}<p>Les artisans étudient votre demande. Les devis arrivent en général sous 48 h.</p></div>`;
+  if(r.status===2){const q=r.quotes[r.chosen];b+=`<section class="sec"><h2>Comparez les devis</h2>${r.quotes.map((x,i)=>`<button class="opt ${r.chosen===i?'on':''}" data-a="pickQ" data-id="${r.id}" data-i="${i}"><span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0"><b>${esc(x.pro)}</b><span class="small muted">★ ${x.note.toLocaleString('fr-FR')} (${x.avis} avis) · dispo ${esc(x.when)}</span><span class="small">${esc(x.line)}</span></span><b class="num" style="font-size:17px">${x.price} €</b></button>`).join('')}</section>
+   <label class="opt ${r.split?'on':''}"><input type="checkbox" id="rq-split" data-a="splitQ" data-id="${r.id}" ${r.split?'checked':''} style="width:20px;height:20px;accent-color:var(--accent)"><span style="flex:1;display:flex;flex-direction:column"><b>Payer en 4 fois</b><span class="small muted">${(q.price/4).toFixed(2).replace('.',',')} € × 4 · l’artisan est payé tout de suite</span></span></label>
+   <button class="btn full warm" data-a="signQ" data-id="${r.id}">Signer le devis de ${esc(q.pro)}</button><p class="note">${ic('lock',14)}Signature électronique horodatée. Le devis signé est rangé dans votre carnet.</p>`;}
+  if(r.status===3)b+=`<div class="card"><dl class="kv"><dt>Artisan</dt><dd>${esc(r.quotes[r.chosen].pro)}</dd><dt>Intervention</dt><dd>${esc(r.quotes[r.chosen].when)}</dd><dt>Montant</dt><dd>${r.quotes[r.chosen].price} €${r.split?' en 4 fois':''}</dd></dl></div><button class="btn full" data-a="workDone" data-id="${r.id}">Simuler la fin des travaux</button>`;
+  if(r.status===4)b+=`<div class="banner a">${ic('doc',20)}<div class="small"><b>Facture rangée dans votre carnet</b>, avec la garantie de parfait achèvement d’un an.</div></div><div class="card" style="align-items:center;text-align:center"><b>Comment s’est passée l’intervention ?</b><div class="stars">${[1,2,3,4,5].map(n=>`<button class="${r.rating>=n?'on':''}" data-a="rate" data-id="${r.id}" data-n="${n}" aria-label="${n} étoile${n>1?'s':''}">★</button>`).join('')}</div>${r.rating?'<span class="small muted">Merci, votre avis aide les autres particuliers.</span>':''}</div>`;
+ }
+ return `<div class="sec-h"><span class="eyebrow">${r.id}</span><span class="small muted">${fmt(r.date)}</span></div>${tl}${b}`;}
+def('reserver','Réserver un professionnel','Demandes','entretien',()=>{const ft=findTask(UI.bk.task)||findTask('ch-ent'),{e,t}=ft,st=UI.bk,offers=offersFor(t,e),slots=slotsList(),o=offers[st.o];
+ return `<div class="banner a"><span class="ico">${ic(e.icon,20)}</span><div class="small"><b>${esc(t.presta)}</b>${esc(e.model)} · dernier entretien le ${fmt(t.last)}</div></div>
+ <section class="sec"><h2>Prix fixes, artisans Habitatpresto</h2>${offers.map((x,i)=>`<button class="opt ${st.o===i?'on':''}" data-a="bkO" data-i="${i}"><span class="ico">${ic('user',20)}</span><span style="flex:1;display:flex;flex-direction:column;min-width:0"><b>${esc(x.pro)}</b><span class="small muted">★ ${x.note.toLocaleString('fr-FR')}${x.tag?' · '+x.tag:''}</span></span><b class="num">${x.price} €</b></button>`).join('')}</section>
+ <section class="sec"><h2>Créneau</h2><div class="grid2">${slots.map((s,i)=>`<button class="opt ${st.s===i?'on':''}" data-a="bkS" data-i="${i}" style="justify-content:center"><b class="small">${s}</b></button>`).join('')}</div></section>
+ ${t.id==='ch-ent'?`<label class="opt ${st.c?'on':''}"><input type="checkbox" id="bk-c" data-a="bkC" ${st.c?'checked':''} style="width:20px;height:20px;accent-color:var(--accent)"><span style="flex:1;display:flex;flex-direction:column"><b>Contrat d’entretien · 14,90 €/mois</b><span class="small muted">Visite annuelle incluse, déplacement offert en cas de panne. <a href="#contrat-entretien">Détails</a></span></span></label>`:''}
+ <div class="card" style="gap:6px"><div class="sec-h"><span class="muted">Aujourd’hui</span><b class="num" style="font-size:20px">${st.c&&t.id==='ch-ent'?'14,90 €/mois':o.price+' €'}</b></div><p class="small muted">${st.c&&t.id==='ch-ent'?'La visite est incluse dans le contrat.':'Payé à l’artisan après la visite. L’attestation se range dans votre carnet.'}</p></div>
+ <button class="btn full warm" data-a="bkOk">Confirmer le rendez-vous du ${slots[st.s]}</button>
+ <a class="link" href="#nouvelle-demande" data-a="prepReq" data-p="${esc(t.presta)}" style="align-self:center">Je préfère recevoir des devis</a>`;});
+def('rdv-confirme','Rendez-vous confirmé','Demandes','demandes',()=>{const r=S.req.find(x=>x.id===UI.lastRdv)||S.req.find(x=>x.kind==='resa');if(!r)return `<div class="card empty">${ic('cal',28)}<p>Aucun rendez-vous pour l’instant. Réservez l’entretien de votre chaudière en 2 minutes.</p><button class="btn warm sm" data-a="book" data-id="ch-ent">Réserver</button></div>`;
+ return `<section class="card" style="align-items:center;text-align:center;padding:24px"><span class="ico" style="width:56px;height:56px">${ic('check',30)}</span><h1>Rendez-vous le ${esc(r.when)}</h1><p class="muted">${esc(r.pro)} · ${esc(r.title)}</p><p class="small">Rappel la veille. L’attestation sera rangée dans votre carnet après la visite.</p>${r.contract?'<span class="chip ok">Contrat d’entretien activé</span>':''}</section>
+ <a class="btn full" href="#req-${r.id}">Suivre le rendez-vous</a><a class="btn full ghost" href="#accueil">Retour à l’accueil</a>`;});
+def('contrats','Mes contrats','Demandes','demandes',()=>`${S.contracts.length?`<div class="list">${S.contracts.map(c=>`<div class="row"><span class="ico w">${ic('shield',20)}</span><div class="b"><strong>${esc(c.t)}</strong><span>${esc(c.pro)} · ${c.price} · depuis le ${fmt(c.from)}</span></div><span class="chip ok">Actif</span></div>`).join('')}</div>`:`<div class="card empty">${ic('shield',28)}<p>Aucun contrat d’entretien pour l’instant.</p></div>`}
+ <a class="btn full warm" href="#contrat-entretien">Découvrir le contrat chaudière</a>`);
+def('contrat-entretien','Contrat d’entretien','Demandes','contrats',()=>`<section class="hero"><span class="eyebrow">Contrat chaudière gaz</span><h1 style="font-size:30px">14,90 €<span style="font-size:16px"> /mois</span></h1><p class="muted">Avec un chauffagiste Habitatpresto près de chez vous.</p></section>
+ <div class="list">${[['check','La visite annuelle obligatoire','Planifiée au printemps, rappel automatique'],['doc','L’attestation rangée dans votre carnet','Disponible pour l’assureur ou la vente'],['tool','Déplacement offert en cas de panne','Main-d’œuvre et pièces sur devis'],['clock','Intervention prioritaire','Sous 48 h en période de chauffe'],['lock','Sans engagement après 12 mois','Résiliable depuis l’app']].map(([i,t,d])=>`<div class="row"><span class="ico">${ic(i,20)}</span><div class="b"><strong>${t}</strong><span>${d}</span></div></div>`).join('')}</div>
+ <p class="small muted">Prix d’exemple. Une visite seule coûte en général 110 à 150 €.</p><button class="btn full warm" data-a="book" data-id="ch-ent">Choisir mon chauffagiste</button>`);
+
+/* ---------- Carnet ---------- */
+const carSeg=on=>`<div class="seg">${[['carnet','Documents'],['cil','Carnet officiel'],['garanties','Garanties'],['partage','Partage']].map(([k,l])=>`<a href="#${k}" class="${on===k?'on':''}">${l}</a>`).join('')}</div>`;
+def('carnet','Carnet','Carnet',null,()=>{const cats=['Tous','Factures','Attestations','Garanties','Diagnostics','Notices','Plans','Assurances','Photos'],q=UI.docQ.toLowerCase();
+ const list=S.docs.filter(d=>(UI.docCat==='Tous'||d.cat===UI.docCat)&&(!q||(d.title+' '+(d.by||'')).toLowerCase().includes(q))).sort((a,b)=>b.date.localeCompare(a.date));
+ return carSeg('carnet')+`<div style="display:flex;gap:8px"><div style="position:relative;flex:1"><input class="input" id="doc-q" data-in="docQ" placeholder="Rechercher une facture, un artisan…" value="${esc(UI.docQ)}" style="padding-left:40px" aria-label="Rechercher un document"><span style="position:absolute;left:12px;top:12px;color:var(--muted)">${ic('search',20)}</span></div><a href="#ajouter-document" class="btn" aria-label="Ajouter un document">${ic('upload',20)}</a></div>
+ <div class="seg">${cats.map(c=>`<button class="${UI.docCat===c?'on':''}" data-a="docCat" data-c="${c}">${c}${c==='Tous'?'':' · '+S.docs.filter(d=>d.cat===c).length}</button>`).join('')}</div>
+ <div class="list">${list.length?list.map(d=>lrow('doc-'+d.id,d.cat==='Photos'?'cam':d.cat==='Garanties'?'shield':'doc',esc(d.title),fmt(d.date)+' · '+esc(d.by||''),d.src==='Taloche'?'w':'',d.src==='Taloche'?'<span class="chip hp">Auto</span>':chev)).join(''):`<div class="empty">${ic('doc',26)}<p>Aucun document ici.</p></div>`}</div>
+ <p class="note">${ic('bolt',14)}<span><b>Auto</b> : déposé directement par l’artisan depuis son logiciel Taloche.</span></p>`;});
+def('ajouter-document','Ajouter un document','Carnet','carnet',()=>`<label for="f-doc" class="drop">${ic('upload',36)}<b>Choisir un fichier</b><span class="small muted">PDF ou photo · facture, notice, diagnostic</span></label>
+ <div class="field"><label for="ad-c">Catégorie</label><select class="input" id="ad-c">${['Factures','Attestations','Garanties','Diagnostics','Notices','Plans','Assurances','Photos'].map(c=>`<option>${c}</option>`).join('')}</select></div>
+ <div class="field"><label for="ad-e">Équipement concerné</label><select class="input" id="ad-e"><option value="">Aucun</option>${S.eq.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('')}</select></div>
+ <div class="banner a">${ic('bolt',20)}<div class="small"><b>Astuce :</b> demandez à vos artisans d’utiliser Taloche, leurs documents arriveront ici sans rien faire.</div></div>`);
+def('cil','Carnet officiel','Carnet','carnet',()=>{const RB=[['plans','Plans, schémas et descriptif','Plans, schémas des réseaux, descriptif des travaux'],['notices','Notices des équipements','Fonctionnement et entretien'],['travaux','Matériaux et travaux réalisés','Factures, attestations, garanties'],['energie','Performance énergétique','DPE, audit énergétique']],n=k=>S.docs.filter(d=>d.cil===k).length,pct=Math.round(RB.filter(([k])=>n(k)>0).length/RB.length*100);
+ return carSeg('cil')+`<div class="hero"><span class="eyebrow">Carnet d’information du logement</span><h2 style="font-size:22px">Prêt à ${pct} % pour une vente</h2><div class="bar" style="background:color-mix(in srgb,var(--bg) 18%,transparent)"><i style="width:${pct}%;background:var(--warm)"></i></div><p class="small muted">Chaque document d’un artisan Habitatpresto est classé dans la bonne rubrique.</p></div>
+ <div class="list">${RB.map(([k,t,d])=>`<div class="row"><span class="ico ${n(k)?'':'n'}">${ic(n(k)?'check':'plus',20)}</span><div class="b"><strong>${t}</strong><span>${d} · ${n(k)} document${n(k)>1?'s':''}</span></div>${n(k)?'':'<a href="#ajouter-document" class="btn ghost sm">Ajouter</a>'}</div>`).join('')}</div>
+ <div class="list">${lrow('obl-cil','book','Ce que dit la loi','Article L126-35-2 du CCH')}${lrow('notaire','share','Préparer le carnet pour le notaire','Lien en lecture seule, 30 jours')}</div>`;});
+def('garanties','Garanties','Carnet','carnet',()=>{const G=[{t:'Fenêtres PVC · décennale',from:'2019-05-15',to:'2029-05-15',by:'Menuiserie Atlantique'},{t:'Climatisation · garantie fabricant',from:'2022-06-10',to:addM('2022-06-10',60),by:'Daikin'},{t:'Climatisation · bon fonctionnement',from:'2022-06-10',to:addM('2022-06-10',24),by:'Clim’Atlantique'},{t:'Assurance habitation',from:'2026-01-01',to:'2026-12-31',by:'Votre assureur'}].concat(S.req.filter(r=>r.status===4&&r.kind==='devis').map(r=>({t:r.title+' · parfait achèvement',from:r.doneDate||today(),to:addM(r.doneDate||today(),12),by:r.quotes[r.chosen].pro})));
+ return carSeg('garanties')+`<p class="muted">Vos garanties en cours. Nous vous prévenons 3 mois avant la fin.</p>`+G.map(g=>{const tot=new Date(g.to)-new Date(g.from),p=Math.max(0,Math.min(100,(T0-new Date(g.from))/tot*100)),left=diff(g.to);return `<div class="card" style="gap:8px"><div class="sec-h"><b style="font-size:15px">${esc(g.t)}</b><span class="chip ${left<0?'':left<120?'soon':'ok'}">${left<0?'Terminée':left<120?`Fin dans ${left} j`:'Jusqu’au '+fmt(g.to)}</span></div><div class="bar"><i style="width:${p}%"></i></div><span class="small muted">${esc(g.by)} · du ${fmt(g.from)} au ${fmt(g.to)}</span></div>`;}).join('')+
+ `<div class="card"><b>Les garanties des travaux</b><ul class="ul"><li><b>Parfait achèvement, 1 an :</b> les défauts signalés après la réception</li><li><b>Bon fonctionnement, 2 ans :</b> équipements dissociables (robinetterie, volets, chaudière)</li><li><b>Décennale, 10 ans :</b> ce qui touche la solidité ou rend le logement inhabitable</li></ul></div>`;});
+def('partage','Partage','Carnet','carnet',()=>carSeg('partage')+`<div class="list">${S.settings.share.map((p,i)=>`<div class="row"><span class="ico">${ic('user',20)}</span><div class="b"><strong>${esc(p.who)}</strong><span>${esc(p.role)} · ${esc(p.scope)}</span></div><button class="btn ghost sm" data-a="unshare" data-i="${i}">Retirer</button></div>`).join('')||'<div class="empty"><p>Personne n’a accès à votre carnet.</p></div>'}</div>
+ <div class="card"><b>Inviter quelqu’un</b><div class="field"><label for="sh-who">Nom ou e-mail</label><input class="input" id="sh-who" placeholder="Ex. : votre notaire, votre locataire"></div>
+ <div class="field"><label for="sh-role">Accès</label><select class="input" id="sh-role"><option>Notaire · lecture seule, 30 jours</option><option>Co-propriétaire · tout le carnet</option><option>Locataire · équipements et entretien</option><option>Artisan · un équipement</option></select></div><button class="btn" data-a="share">Envoyer l’invitation</button></div>
+ <a class="banner a" href="#notaire" style="text-decoration:none;color:inherit">${ic('home',20)}<div class="small"><b>Vous vendez ?</b> Un historique d’entretien complet rassure l’acheteur. Le carnet se transmet au nouveau propriétaire.</div></a>`);
+def('notaire','Carnet pour le notaire','Carnet','cil',()=>{const link='bienchezmoi.fr/c/'+(S.user.code||'demo').toLowerCase();
+ return `<p>Un lien en lecture seule, valable 30 jours : fiche du logement, équipements, historique d’entretien, factures, garanties et diagnostics.</p>
+ <div class="card"><span class="eyebrow">Lien de partage</span><b style="user-select:all;word-break:break-all">${link}</b><button class="btn" data-a="copy" data-t="${link}">Copier le lien</button></div>
+ <div class="list">${['Fiche du logement','Équipements et notices','Historique d’entretien','Factures et garanties','Diagnostics (DPE)','Risques naturels'].map((x,i)=>`<label class="row"><input type="checkbox" id="nt-${i}" checked style="width:20px;height:20px;accent-color:var(--accent)"><div class="b"><strong>${x}</strong></div></label>`).join('')}</div>
+ <div class="list">${lrow('obl-diagnostics','doc','Les diagnostics à prévoir pour la vente','Amiante, gaz, électricité, termites…')}</div>${demo}`;});
+function docPaper(d){
+ if(d.img)return `<img class="thumb" src="${d.img}" alt="${esc(d.title)}" style="aspect-ratio:auto">`;
+ if(d.cat==='Factures'||d.cat==='Attestations'){const ht=d.amount?d.amount/1.1:0;
+  return `<div class="doc-paper"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(d.by)}</b><span>${d.cat==='Factures'?'FACTURE':'ATTESTATION'}</span></div><span>${fmt(d.date,{day:'2-digit',month:'2-digit',year:'numeric'})} · Client : ${esc(S.user.first)} ${esc(S.user.last)}<br>${esc(S.house.address)}</span>${d.amount?`<table><tr><td>${esc(d.title.replace(/^.*· /,''))}</td><td>${ht.toLocaleString('fr-FR',{maximumFractionDigits:2})} € HT</td></tr><tr><td>TVA 10 %</td><td>${(d.amount-ht).toLocaleString('fr-FR',{maximumFractionDigits:2})} €</td></tr><tr><td><b>Total TTC</b></td><td><b>${eur(d.amount)}</b></td></tr></table>`:''}${d.src==='Taloche'?'<span style="color:#9a5a2c">Document émis avec Taloche, transmis automatiquement</span>':''}</div>`;}
+ return `<div class="doc-paper" style="align-items:center;padding:28px">${ic('doc',40)}<b>${esc(d.title)}</b><span>${esc(d.by||'')}</span></div>`;}
+function vDoc(d){const e=S.eq.find(x=>x.id===d.eq);
+ return `<h1 style="font-size:20px">${esc(d.title)}</h1>${docPaper(d)}<div class="card"><dl class="kv"><dt>Catégorie</dt><dd>${d.cat}</dd><dt>Date</dt><dd>${fmt(d.date)}</dd><dt>Émis par</dt><dd>${esc(d.by||'—')}</dd><dt>Ajouté par</dt><dd>${d.src==='Taloche'?'L’artisan, automatiquement':d.src}</dd>${d.until?`<dt>Valable jusqu’au</dt><dd>${fmt(d.until)}</dd>`:''}${d.amount?`<dt>Montant</dt><dd>${eur(d.amount)} TTC</dd>`:''}</dl></div>
+ ${e?`<div class="list">${lrow('eq-'+e.id,e.icon,esc(e.name),'Équipement lié')}</div>`:''}
+ <div class="btns"><button class="btn ghost" data-a="toast" data-m="Lien de partage copié">${ic('share',18)}Partager</button><button class="btn ghost" data-a="delDoc" data-id="${d.id}">${ic('trash',18)}Supprimer</button></div>`;}
+
+/* ---------- Énergie ---------- */
+const enSeg=on=>`<div class="seg">${[['energie','Vue d’ensemble'],['dpe','DPE'],['consommation','Consommation'],['renovation','Travaux'],['aides','Aides'],['simulateur','Simulateur'],['audit','Audit']].map(([k,l])=>`<a href="#${k}" class="${on===k?'on':''}">${l}</a>`).join('')}</div>`;
+const CONS=[1450,1280,980,620,310,180,150,160,330,720,1150,1390];
+def('energie','Énergie et aides','Énergie','accueil',()=>{const h=S.house;
+ return enSeg('energie')+`<section class="hero"><span class="eyebrow">Votre maison</span><div style="display:flex;align-items:center;gap:14px"><span style="width:64px;height:64px;border-radius:16px;background:${DPE_COL[h.dpe]};color:#1d1d1d;display:grid;place-items:center;font-family:var(--f-display);font-size:34px;font-weight:800">${h.dpe}</span><div><h2 style="font-size:20px">${h.dpeVal} kWh/m²/an</h2><p class="small muted">Objectif possible : classe C avec 2 ou 3 chantiers</p></div></div></section>
+ <section class="grid2">${[['dpe','leaf','Mon DPE','Valable jusqu’en 2031'],['consommation','bolt','Ma consommation',CONS.reduce((a,b)=>a+b,0).toLocaleString('fr-FR')+' kWh/an'],['renovation','tool','Travaux conseillés','4 pistes'],['aides','euro','Les aides','5 dispositifs'],['simulateur','search','Simulateur d’aides','2 minutes'],['audit','doc','Audit énergétique','Chiffrer les gains']].map(([k,i,t,s])=>`<a class="tile" href="#${k}"><span class="ico">${ic(i,20)}</span>${t}<span class="small">${s}</span></a>`).join('')}</section>
+ <div class="list">${lrow('obl-location','key','Si vous louez un jour','Calendrier des interdictions de location')}${lrow('art-a11','euro','5 gestes pour baisser sa facture','Le mag')}</div>`;});
+def('dpe','Mon DPE','Énergie','energie',()=>{const h=S.house,L=['A','B','C','D','E','F','G'];
+ return enSeg('dpe')+`<section class="card"><div class="sec-h"><h2>Diagnostic de performance énergétique</h2><span class="chip">${fmt(h.dpeDate,{month:'short',year:'numeric'})}</span></div>
+ <div class="dpe">${L.map((l,i)=>`<div class="${l===h.dpe?'me':''}" style="background:${DPE_COL[l]};width:${38+i*9}%;color:${i>=2&&i<=4?'#1d1d1d':'#fff'}">${l}${l===h.dpe?` · ${h.dpeVal} kWh/m²/an`:''}</div>`).join('')}</div>
+ <dl class="kv"><dt>Numéro ADEME</dt><dd class="num">${h.dpeNum}</dd><dt>Émissions (GES)</dt><dd>${h.ges} · ${h.gesVal} kg CO₂/m²/an</dd><dt>Validité</dt><dd>jusqu’au ${fmt(addM(h.dpeDate,120))}</dd></dl></section>
+ <div class="card"><b>Ce qui pèse sur votre classe</b><ul class="ul"><li>Combles isolés avec 10 cm seulement</li><li>Murs en parpaing peu isolés</li><li>Chaudière gaz, énergie fossile</li><li>VMC autoréglable ancienne</li></ul></div>
+ <div class="list">${lrow('doc-d6','doc','Ouvrir le DPE','Dans votre carnet')}${lrow('renovation','tool','Comment gagner des classes','Travaux conseillés')}</div>`;});
+def('consommation','Consommation','Énergie','energie',()=>{const mx=Math.max(...CONS),m0=(T0.getMonth()+1)%12,lab=[...Array(12)].map((_,i)=>MONTHS[(m0+i)%12].slice(0,3)),tot=CONS.reduce((a,b)=>a+b,0);
+ return enSeg('consommation')+`<section class="card"><div class="sec-h"><h2>Gaz · 12 derniers mois</h2><span class="chip">Exemple · kWh</span></div><div class="bars">${CONS.map((v,i)=>`<div><i style="height:${Math.round(v/mx*85)}%;${i===11?'background:var(--warm)':''}" title="${v} kWh"></i><span>${lab[i]}</span></div>`).join('')}</div>
+ <dl class="kv"><dt>Total</dt><dd class="num">${tot.toLocaleString('fr-FR')} kWh</dd><dt>Par m²</dt><dd class="num">${Math.round(tot/S.house.surface)} kWh/m²</dd><dt>Mois le plus froid</dt><dd>${lab[CONS.indexOf(mx)]} · ${mx.toLocaleString('fr-FR')} kWh</dd></dl></section>
+ <div class="list">${['Compteur gaz GRDF','Compteur électrique Linky'].map(t=>`<div class="row"><span class="ico n">${ic('bolt',20)}</span><div class="b"><strong>${t}</strong><span>Suivre vos vrais relevés</span></div><button class="btn ghost sm" data-a="toast" data-m="Connexion : disponible dans la version finale">Connecter</button></div>`).join('')}</div>`;});
+def('renovation','Travaux conseillés','Énergie','energie',()=>enSeg('renovation')+`<p class="muted">Pour passer de E à C, par ordre d’efficacité habituel pour une maison de ${S.house.year}.</p>
+ ${[['Isoler les combles perdus','Souvent le meilleur rapport coût / gain. Passer de 10 cm à 30 cm d’isolant.','roof','Isolation des combles','couvreur'],['Remplacer la chaudière par une pompe à chaleur air-eau','Gros gain, aides importantes selon vos revenus.','flame','Installation de pompe à chaleur','climaticien'],['Isoler les murs par l’extérieur','Chantier plus lourd, gain élevé, la façade est refaite.','home','Isolation des murs','macon'],['VMC hygroréglable','Meilleur air intérieur, moins de pertes.','wind','Installation de VMC','climaticien']].map(([t,d,i,p,m],k)=>`<div class="card" style="gap:8px"><div style="display:flex;gap:12px"><span class="ico">${ic(i,20)}</span><div style="flex:1;min-width:0"><span class="eyebrow">Piste ${k+1}</span><b style="display:block">${t}</b><p class="small muted">${d}</p></div></div><div class="btns"><a class="btn warm sm" href="#nouvelle-demande" data-a="prepReq" data-p="${p}">Demander un devis</a><a class="btn ghost sm" href="#metier-${m}">Les artisans</a></div></div>`).join('')}
+ <p class="note">${ic('alert',14)}Les gains réels dépendent de votre maison. Un <a href="#audit">audit énergétique</a> les chiffre précisément.</p>`);
+def('aides','Les aides','Énergie','energie',()=>enSeg('aides')+`<div class="list">${Object.entries(AIDES).map(([k,a])=>lrow('aide-'+k,a.icon,a.t,a.d)).join('')}</div>
+ <div class="banner a">${ic('shield',20)}<div class="small">La plupart des aides exigent un artisan <b>RGE</b>. Les artisans Habitatpresto affichent leur qualification.</div></div>
+ <a class="btn full" href="#simulateur">Voir les aides possibles pour moi</a><p class="small muted">Pour vérifier vos droits : <a href="https://france-renov.gouv.fr" target="_blank" rel="noopener">france-renov.gouv.fr</a></p>`);
+function vAide(a){return `<section class="hero"><span class="eyebrow">Aide à la rénovation</span><h1>${a.t}</h1><p class="muted">${a.d}</p></section><div class="card"><dl class="kv"><dt>Pour qui</dt><dd>${a.who}</dd></dl></div>${prose(a.body)}
+ <div class="btns"><a class="btn" href="#simulateur">Simuler mes aides</a><a class="btn ghost" href="#renovation">Les travaux</a></div><p class="small muted">Informations générales, à vérifier sur <a href="https://france-renov.gouv.fr" target="_blank" rel="noopener">france-renov.gouv.fr</a>.</p>`;}
+def('simulateur','Simulateur d’aides','Énergie','aides',()=>{const s=UI.sim,REV=[['bleu','Très modestes'],['jaune','Modestes'],['violet','Intermédiaires'],['rose','Supérieurs']],TR=[['combles','Isolation des combles'],['murs','Isolation des murs'],['pac','Pompe à chaleur'],['vmc','VMC'],['fenetres','Fenêtres']];
+ const el=[['MaPrimeRénov’',s.rev!=='rose'||s.travaux.includes('murs')?'Probablement éligible':'Peu probable pour ces travaux'],['Primes énergie (CEE)','Éligible'],['Éco-prêt à taux zéro','Éligible'],['TVA à 5,5 %','Appliquée sur la facture'],['Aides locales',s.rev==='bleu'||s.rev==='jaune'?'À vérifier, souvent réservées à votre catégorie':'Rarement']];
+ return enSeg('simulateur')+`<section class="sec"><h2>Vos revenus</h2><p class="small muted">Catégories de revenus de l’Anah, selon la taille du foyer.</p><div class="grid2">${REV.map(([k,l])=>`<button class="opt ${s.rev===k?'on':''}" data-a="simRev" data-k="${k}"><b class="small">${l}</b></button>`).join('')}</div></section>
+ <section class="sec"><h2>Vos travaux</h2><div class="grid2">${TR.map(([k,l])=>`<button class="opt ${s.travaux.includes(k)?'on':''}" data-a="simTr" data-k="${k}"><b class="small">${l}</b></button>`).join('')}</div></section>
+ <section class="card"><b>Ce que vous pouvez probablement obtenir</b>${el.map(([t,v])=>`<div class="sec-h"><span>${t}</span><span class="chip ${/Peu|Rarement/.test(v)?'':'ok'}">${v}</span></div>`).join('')}</section>
+ <p class="note">${ic('alert',14)}Estimation sans montant : les barèmes changent régulièrement. Un conseiller France Rénov’ confirme vos droits gratuitement.</p>
+ <a class="btn full warm" href="#nouvelle-demande" data-a="prepReq" data-p="Isolation des combles">Demander des devis RGE</a>`;});
+def('audit','Audit énergétique','Énergie','energie',()=>enSeg('audit')+`<section class="card"><h2>À quoi sert un audit ?</h2><p class="small">Un auditeur visite la maison, mesure les déperditions et propose des scénarios de travaux chiffrés pour gagner des classes. Il est obligatoire pour vendre une maison classée E, F ou G, et souvent exigé pour une rénovation d’ampleur aidée.</p></section>
+ <div class="list">${[['clock','Durée','2 à 3 heures de visite'],['euro','Prix habituel','600 à 1 200 €, une partie peut être aidée'],['doc','Livré','Un rapport avec 2 scénarios de travaux']].map(([i,t,d])=>`<div class="row"><span class="ico">${ic(i,20)}</span><div class="b"><strong>${t}</strong><span>${d}</span></div></div>`).join('')}</div>
+ <a class="btn full warm" href="#nouvelle-demande" data-a="prepReq" data-p="Audit énergétique">Demander un audit</a>`);
+
+/* ---------- Artisans ---------- */
+def('artisans','Mes artisans','Artisans','accueil',()=>`<p class="muted">Les professionnels déjà intervenus chez vous.</p><div class="list">${S.pros.map(p=>lrow('pro-'+p.id,'user',esc(p.name),esc(p.job)+' · ★ '+p.note.toLocaleString('fr-FR')+' · '+fmt(p.last))).join('')}</div>
+ <a class="btn full ghost" href="#annuaire">${ic('search',18)}Trouver un artisan par métier</a>
+ <div class="banner a">${ic('shield',20)}<div class="small"><b>Artisans vérifiés par Habitatpresto :</b> SIRET, assurance décennale et qualifications contrôlés, avis de clients après intervention.</div></div>`);
+def('annuaire','Trouver un artisan','Artisans','artisans',()=>`<p class="muted">Des artisans vérifiés autour de La Rochelle.</p><div class="grid2">${Object.entries(METIERS).map(([k,m])=>`<a class="tile" href="#metier-${k}"><span class="ico">${ic(m.icon,20)}</span>${m.t}<span class="small">${esc(m.d.split(',')[0])}</span></a>`).join('')}</div>`);
+function vMetier(k,m){const ps=prosFor(k);
+ return `<section class="hero"><span class="eyebrow">Autour de La Rochelle</span><h1>${m.t}</h1><p class="muted">${m.d}</p></section>
+ <section class="sec"><h2>Prix habituels</h2><div class="list">${m.jobs.map(([j,p])=>`<div class="row"><div class="b"><strong>${j}</strong></div><span class="chip num">${p}</span></div>`).join('')}</div><p class="small muted">Ordres de prix indicatifs, pose comprise, hors cas particuliers.</p></section>
+ <section class="sec"><h2>Artisans disponibles</h2><div class="list">${ps.map(p=>S.pros.includes(p)?lrow('pro-'+p.id,'user',esc(p.name),esc(p.city)+' · ★ '+p.note.toLocaleString('fr-FR')+' ('+p.avis+' avis) · déjà venu chez vous'):`<div class="row"><span class="ico n">${ic('user',20)}</span><div class="b"><strong>${esc(p.name)}</strong><span>${esc(p.city)} · ★ ${p.note.toLocaleString('fr-FR')} (${p.avis} avis)</span></div></div>`).join('')}</div></section>
+ <a class="btn full warm" href="#nouvelle-demande" data-a="prepReq" data-p="${esc(m.jobs[0][0])}">Demander des devis</a>${demo}`;}
+function vPro(p){
+ return `<section class="card" style="flex-direction:row;align-items:center"><span class="ico" style="width:60px;height:60px;border-radius:18px">${ic('user',28)}</span><div style="flex:1;min-width:0"><h1 style="font-size:20px">${esc(p.name)}</h1><p class="small muted">${esc(p.job)} · ${esc(p.city)} · depuis ${p.since}</p><p class="small"><b>★ ${p.note.toLocaleString('fr-FR')}</b> · ${p.avis} avis</p></div></section>
+ <div class="chips"><span class="chip ok">SIRET vérifié</span><span class="chip ok">Décennale à jour</span>${/RGE|Quali/.test(p.job)?'<span class="chip ok">RGE</span>':''}<span class="chip hp">Utilise Taloche</span></div>
+ <div class="card"><dl class="kv"><dt>Dernière intervention</dt><dd>${fmt(p.last)}</dd><dt>Téléphone</dt><dd class="num" style="user-select:all">${p.phone}</dd><dt>Zone</dt><dd>${esc(p.city)} et 25 km</dd></dl></div>
+ <section class="sec"><h2>Avis de clients</h2>${[['Marie L.','Ponctuel, propre, il a expliqué ce qu’il faisait.',5],['Thomas B.','Devis respecté, je recommande.',5],['Hélène G.','Bon travail, un peu de délai pour le rendez-vous.',4]].map(([n,t,s])=>`<div class="card" style="gap:4px"><div class="sec-h"><b class="small">${n}</b><span class="small" style="color:var(--warm)">${'★'.repeat(s)}</span></div><p class="quote">${t}</p></div>`).join('')}<p class="small muted">Avis d’exemple pour la démonstration.</p></section>
+ <div class="btns"><button class="btn warm" data-a="rebook" data-id="${p.id}">Redemander</button><button class="btn ghost" data-a="copy" data-t="${p.phone}">${ic('phone',16)}Copier le numéro</button></div>`;}
+
+/* ---------- Mag ---------- */
+def('mag','Le mag','Le mag',null,()=>{const cats=['tout','Pour moi','Entretien','Saison','Énergie','Sécurité','Travaux','Démarches'],c=UI.magCat,list=ART.filter(a=>c==='tout'||(c==='Pour moi'?a.eq&&S.eq.some(e=>e.id===a.eq):a.cat===c)),f=list[0];
+ return `<div class="seg">${cats.map(k=>`<button class="${c===k?'on':''}" data-a="magCat" data-k="${k}">${k==='tout'?'À la une':k}</button>`).join('')}</div>
+ ${f?`<a class="card" href="#art-${f.id}" style="padding:0;overflow:hidden;text-decoration:none;color:inherit">${artPic(f,140)}<div style="padding:16px;display:flex;flex-direction:column;gap:6px"><span class="eyebrow">${f.cat} · ${f.min} min de lecture</span><h2 style="font-size:20px">${esc(f.t)}</h2><p class="small muted">${esc(f.body[0].replace(/<[^>]+>/g,'').slice(0,120))}…</p></div></a>`:''}
+ <div class="list">${list.slice(1).map(a=>lrow('art-'+a.id,a.icon,esc(a.t),a.cat+' · '+a.min+' min'+(S.saved.includes(a.id)?' · enregistré':''))).join('')}</div>
+ <div class="list">${lrow('mag-enregistres','book','Mes articles enregistrés',S.saved.length+' article'+(S.saved.length>1?'s':''))}</div>
+ <p class="foot">Les articles du magazine Habitatpresto, choisis selon votre maison.</p>`;});
+def('mag-enregistres','Articles enregistrés','Le mag','mag',()=>{const l=ART.filter(a=>S.saved.includes(a.id));return l.length?`<div class="list">${l.map(a=>lrow('art-'+a.id,a.icon,esc(a.t),a.cat)).join('')}</div>`:`<div class="card empty">${ic('book',28)}<p>Enregistrez un article pour le retrouver ici.</p><a class="btn sm" href="#mag">Parcourir le mag</a></div>`;});
+function vArt(a){const e=a.eq&&S.eq.find(x=>x.id===a.eq),t=e&&allTasks().find(x=>x.eq.id===e.id&&x.legal&&x.pro),rel=ART.filter(x=>x.cat===a.cat&&x.id!==a.id).slice(0,3);
+ return `<div style="border-radius:18px;overflow:hidden">${artPic(a,150)}</div><span class="eyebrow">${a.cat} · ${a.min} min de lecture · Le mag Habitatpresto</span><h1>${esc(a.t)}</h1>
+ ${e?`<a class="banner a" href="#eq-${e.id}" style="text-decoration:none;color:inherit">${ic(e.icon,20)}<div class="small"><b>Chez vous :</b> ${esc(e.model)}${t?' · '+dueTxt(t).toLowerCase():''}</div></a>`:''}${prose(a.body)}
+ ${t?`<button class="btn full warm" data-a="book" data-id="${t.id}">Réserver un professionnel</button>`:`<a class="btn full warm" href="#nouvelle-demande" data-a="prepReq" data-p="Autre">Trouver un artisan Habitatpresto</a>`}
+ <button class="btn full ghost" data-a="saveArt" data-id="${a.id}">${S.saved.includes(a.id)?'Retirer de mes articles':'Enregistrer l’article'}</button>
+ ${rel.length?`<section class="sec"><h2>À lire aussi</h2><div class="list">${rel.map(x=>lrow('art-'+x.id,x.icon,esc(x.t),x.min+' min')).join('')}</div></section>`:''}`;}
+
+/* ---------- Entretien : fiches ---------- */
+function vObl(k,o){const t=o.task&&allTasks().find(x=>x.id===o.task);
+ return `<section class="hero"><span class="eyebrow">Obligation légale</span><h1>${o.t}</h1><p class="muted">${o.freq}</p></section>
+ ${t?`<div class="card" style="gap:8px"><div class="sec-h"><b>Chez vous</b>${chipFor(t)}</div><p class="small">${esc(t.eq.model)} · dernier : ${fmt(t.last)}</p>${t.pro?`<div class="btns"><button class="btn warm" data-a="book" data-id="${t.id}">Réserver</button><button class="btn ghost" data-a="done" data-id="${t.id}">Déjà fait</button></div>`:`<button class="btn ghost" data-a="done" data-id="${t.id}">C’est fait</button>`}</div>`:''}
+ <div class="card"><dl class="kv"><dt>Qui</dt><dd>${o.who}</dd><dt>Fréquence</dt><dd>${o.freq}</dd><dt>Concerne</dt><dd>${o.scope}</dd><dt>Texte</dt><dd>${o.ref}</dd></dl></div>${prose(o.body)}
+ <p class="note">${ic('info',14)}Information générale, ne remplace pas le texte officiel.</p>`;}
+function vSeason(k,s){const now=k===S.season.key;
+ return `<section class="hero"><span class="eyebrow">${now?'En cours':'Checklist'}</span><h1>${s.name}</h1><p class="muted">${s.months.map(m=>MONTHS[m]).join(', ')}</p></section>
+ ${now?`<div class="card">${S.season.items.map((it,i)=>`<label class="check"><input type="checkbox" id="ss-${i}" data-a="season" data-i="${i}" ${it.done?'checked':''}><span>${esc(it.t)}</span></label>`).join('')}</div>`:`<div class="list">${s.items.map(t=>`<div class="row"><span class="ico n">${ic('check',18)}</span><div class="b"><strong>${esc(t)}</strong></div></div>`).join('')}</div><p class="small muted">Nous vous enverrons cette liste au début de la saison.</p>`}`;}
+
+/* ---------- Assistant ---------- */
+def('assistant','Assistant','S’informer','accueil',()=>{if(!S.chat.length)S.chat=[{me:false,t:`Bonjour ${S.user.first} ! Je connais votre maison : ses équipements, ses entretiens et ses documents. Posez-moi une question.`}];
+ return `<div class="chat" id="chat">${S.chat.map(m=>`<div class="msg ${m.me?'me':'bot'}">${esc(m.t)}${m.cta?`<div style="margin-top:8px">${m.cta.href?`<a class="btn warm sm" href="#${m.cta.href}">${esc(m.cta.l)}</a>`:`<button class="btn warm sm" data-a="${m.cta.a}" data-id="${m.cta.id||''}">${esc(m.cta.l)}</button>`}</div>`:''}</div>`).join('')}</div>
+ <div class="seg">${['Quand entretenir ma chaudière ?','J’ai une fuite','Comment purger un radiateur ?','Quelles aides pour isoler ?','Où est ma facture de fenêtres ?','Je vends ma maison'].map(q=>`<button data-a="ask" data-q="${esc(q)}">${q}</button>`).join('')}</div>
+ <form id="chat-f" style="display:flex;gap:8px;position:sticky;bottom:80px"><input class="input" id="chat-in" placeholder="Votre question…" autocomplete="off" aria-label="Votre question"><button class="btn" aria-label="Envoyer">${ic('chev',20)}</button></form>
+ <p class="note">${ic('alert',14)}Réponses indicatives. Pour un diagnostic, faites venir un professionnel.</p>`;});
+function answer(q){const s=q.toLowerCase(),ch=findTask('ch-ent'),tc=allTasks().find(t=>t.id==='ch-ent');
+ if(/odeur|sent le gaz|fuite de gaz/.test(s))return{t:'Si ça sent le gaz : n’allumez rien, ouvrez les fenêtres, fermez le robinet au compteur, sortez et appelez Urgence Sécurité Gaz au 0 800 47 33 33.',cta:{href:'urgences',l:'Numéros d’urgence'}};
+ if(/chaudi|attestation/.test(s))return{t:`L’entretien de votre chaudière gaz est obligatoire chaque année. Le dernier date du ${fmt(ch.t.last)} : ${tc.d<0?`il est en retard de ${-tc.d} jours.`:`le prochain est à prévoir avant le ${fmt(tc.due)}.`}\nComptez 110 à 150 €, ou 14,90 €/mois avec un contrat.`,cta:{a:'book',id:'ch-ent',l:'Voir les créneaux'}};
+ if(/fuite|eau|évier|evier|wc|robinet/.test(s))return{t:'Fermez d’abord l’arrivée d’eau (robinet sous l’évier ou compteur), puis épongez. Envoyez-moi une photo : je vous dis à quoi ça ressemble et quel artisan il vous faut.',cta:{href:'souci',l:'Envoyer une photo'}};
+ if(/purg|radiateur/.test(s))return{t:'Chauffage coupé, ouvrez la vis de purge d’un quart de tour avec un chiffon dessous, refermez quand l’eau coule sans bulles. Remontez la pression entre 1 et 1,5 bar.',cta:{href:'art-a3',l:'Lire le pas-à-pas'}};
+ if(/aide|maprime|isol|dpe|cee|prime/.test(s))return{t:`Votre maison est classée ${S.house.dpe}. Isoler les combles est souvent le meilleur premier chantier. MaPrimeRénov’, les primes CEE et l’éco-PTZ peuvent se cumuler, avec un artisan RGE.`,cta:{href:'simulateur',l:'Simuler mes aides'}};
+ if(/factur|document|fen[eê]tre|garantie/.test(s))return{t:'La facture de remplacement des fenêtres (15 mai 2019, 9 840 €) est dans votre carnet. La garantie décennale court jusqu’au 15 mai 2029.',cta:{href:'doc-d3',l:'Ouvrir la facture'}};
+ if(/vend|notaire|cil|carnet/.test(s))return{t:'Votre carnet d’information du logement se transmet à l’acheteur. Je peux préparer un lien en lecture seule pour votre notaire, valable 30 jours.',cta:{href:'notaire',l:'Préparer le carnet'}};
+ if(/fissur|mur|fa[cç]ade/.test(s))return{t:'Votre adresse est exposée au retrait-gonflement des argiles. Photographiez la fissure aujourd’hui et dans un mois : si elle s’élargit, faites venir un maçon.',cta:{href:'diag-fissure',l:'Guide fissures'}};
+ if(/clim|pac|pompe/.test(s)){const t=allTasks().find(x=>x.id==='cl-ent');return{t:`L’entretien de votre climatisation est obligatoire tous les 2 ans. Prochain : ${fmt(t.due)}. Nettoyez les filtres tous les 3 mois.`,cta:{a:'book',id:'cl-ent',l:'Réserver'}};}
+ if(/ramon|chemin|insert/.test(s))return{t:'Le ramonage est obligatoire 1 à 2 fois par an selon votre département. Gardez le certificat pour l’assureur.',cta:{a:'book',id:'in-ram',l:'Réserver un ramoneur'}};
+ return{t:'Je peux vous aider sur l’entretien de vos équipements, vos documents, les aides, ou trouver un artisan. Essayez « chaudière », « fuite » ou « aides ».'};}
+
+/* ---------- Compte ---------- */
+def('compte','Mon compte','Compte','accueil',()=>`<a class="card" href="#profil" style="flex-direction:row;align-items:center;text-decoration:none;color:inherit"><span class="ico" style="width:56px;height:56px;border-radius:18px;font-family:var(--f-display);font-size:22px;font-weight:800">${S.user.first[0]}${S.user.last[0]}</span><div style="flex:1;min-width:0"><b style="font-size:17px">${esc(S.user.first)} ${esc(S.user.last)}</b><p class="small muted">${esc(S.user.email)}</p></div>${chev}</a>
+ <a class="banner w" href="#premium" style="text-decoration:none;color:inherit"><span class="ico w">${ic('star',20)}</span><div><b>Bien chez moi+</b><span class="small">Rappels SMS, stockage illimité, assistance téléphone.</span></div>${chev}</a>
+ <div class="list">${lrow('logements','home','Mes logements',S.homes.length+' logement')}${lrow('foyer','users','Mon foyer',S.household.length+' personnes')}${lrow('partage','share','Partage du carnet',S.settings.share.length+' accès')}${lrow('notifications','bell','Notifications')}${lrow('rappels','cal','Rappels d’entretien')}</div>
+ <div class="list">${lrow('parrainage','gift','Parrainer un proche','Code '+S.user.code)}${lrow('faq','info','Questions fréquentes')}${lrow('support','chat','Contacter le support')}</div>
+ <div class="list">${lrow('confidentialite','lock','Confidentialité et données')}${lrow('cgu','doc','Conditions d’utilisation')}${lrow('a-propos','info','À propos')}${lrow('plan-app','grid','Tous les écrans de la démo')}<button class="row" data-a="reset"><span class="ico d">${ic('trash',20)}</span><div class="b"><strong>Remettre la démo à zéro</strong></div></button></div>
+ <a class="btn ghost full" href="#bienvenue">Se déconnecter</a>`);
+def('profil','Mon profil','Compte','compte',()=>`${[['first','Prénom'],['last','Nom'],['email','E-mail'],['phone','Téléphone']].map(([k,l])=>`<div class="field"><label for="pf-${k}">${l}</label><input class="input" id="pf-${k}" value="${esc(S.user[k])}"></div>`).join('')}<button class="btn full" data-a="saveProfil">Enregistrer</button><a class="link" href="#mot-de-passe">Changer le mot de passe</a>`);
+def('logements','Mes logements','Compte','compte',()=>`<div class="list">${S.homes.map(h=>lrow('maison','home',esc(h.name),esc(h.address),'',h.main?'<span class="chip ok">Principal</span>':chev)).join('')}</div>
+ <div class="card"><b>Ajouter un logement</b><div class="field"><label for="lg-n">Nom</label><input class="input" id="lg-n" placeholder="Ex. : maison de vacances"></div><div class="field"><label for="lg-a">Adresse</label><input class="input" id="lg-a" placeholder="Adresse complète"></div><button class="btn" data-a="addHome">Ajouter</button></div>
+ <p class="small muted">Résidence secondaire, bien en location : chaque logement a son carnet et ses rappels.</p>`);
+def('foyer','Mon foyer','Compte','compte',()=>`<div class="list">${S.household.map(m=>`<div class="row"><span class="ico">${ic('user',20)}</span><div class="b"><strong>${esc(m.n)}</strong><span>${esc(m.r)}</span></div></div>`).join('')}</div>
+ <div class="card"><b>Inviter un membre du foyer</b><div class="field"><label for="fy-n">Nom ou e-mail</label><input class="input" id="fy-n"></div><button class="btn" data-a="addMember">Inviter</button></div>`);
+def('notifications','Notifications','Compte','compte',()=>`<div class="list">${sw('push','Notifications sur le téléphone')}${sw('email','E-mails')}${sw('sms','SMS pour les obligations légales')}</div><div class="list">${sw('season','Checklist de chaque saison')}${sw('mag','Articles du mag pour ma maison')}${sw('offers','Offres des partenaires Habitatpresto')}</div>`);
+def('confidentialite','Confidentialité','Compte','compte',()=>`<div class="list">${[['lock','Hébergées en France','Vos données sont chiffrées et hébergées en France.'],['users','Jamais vendues','Les artisans ne voient que ce que vous leur envoyez.'],['shield','Vos droits','Accès, rectification, suppression : à tout moment depuis l’app.']].map(([i,t,d])=>`<div class="row"><span class="ico">${ic(i,20)}</span><div class="b"><strong>${t}</strong><span>${d}</span></div></div>`).join('')}</div>
+ <div class="list"><button class="row" data-a="toast" data-m="Export préparé : vous le recevrez par e-mail"><span class="ico n">${ic('upload',20)}</span><div class="b"><strong>Exporter toutes mes données</strong><span>Documents et historique, au format ZIP</span></div></button><button class="row" data-a="toast" data-m="Demande de suppression enregistrée"><span class="ico d">${ic('trash',20)}</span><div class="b"><strong>Supprimer mon compte</strong><span>Le carnet peut d’abord être transmis</span></div></button></div>`);
+def('premium','Bien chez moi+','Compte','compte',()=>`<section class="hero"><span class="eyebrow">Offre premium</span><h1 style="font-size:30px">2,99 €<span style="font-size:16px"> /mois</span></h1><p class="muted">Pour ceux qui veulent qu’on s’occupe de tout.</p></section>
+ <div class="list">${[['phone','Rappels par SMS','Pour tous les entretiens'],['doc','Stockage illimité','Photos et documents en haute qualité'],['chat','Assistance téléphone','Un conseiller habitat pour vos questions'],['home','Plusieurs logements','Résidence secondaire, biens loués'],['euro','−10 % sur les contrats','Avec les artisans Habitatpresto']].map(([i,t,d])=>`<div class="row"><span class="ico w">${ic(i,20)}</span><div class="b"><strong>${t}</strong><span>${d}</span></div></div>`).join('')}</div>
+ <button class="btn full warm" data-a="toast" data-m="Essai gratuit de 30 jours activé (démo)">Essayer 30 jours gratuitement</button><p class="small muted">Offre d’exemple pour la démonstration.</p>`);
+def('parrainage','Parrainage','Compte','compte',()=>`<section class="card" style="align-items:center;text-align:center;padding:24px"><span class="ico w" style="width:56px;height:56px">${ic('gift',28)}</span><h1>Offrez un entretien à −20 €</h1><p class="small muted">Votre proche bénéficie de 20 € sur son premier entretien, vous aussi.</p><b style="font-family:var(--f-display);font-size:26px;user-select:all">${S.user.code}</b><button class="btn" data-a="copy" data-t="${S.user.code}">Copier le code</button></section>`);
+def('faq','Questions fréquentes','Compte','compte',()=>FAQ.map(([q,a])=>`<details class="faq"><summary>${q}</summary><p>${a}</p></details>`).join('')+`<a class="btn ghost full" href="#support">Une autre question ?</a>`);
+def('support','Support','Compte','compte',()=>`<p class="muted">Notre équipe à La Rochelle vous répond en semaine, sous 24 h.</p><div class="field"><label for="sp-s">Sujet</label><select class="input" id="sp-s"><option>Une demande de devis</option><option>Un artisan</option><option>Mon carnet</option><option>Mon compte</option><option>Autre</option></select></div><div class="field"><label for="sp-m">Message</label><textarea class="input" id="sp-m"></textarea></div><button class="btn full" data-a="toast" data-m="Message envoyé, réponse sous 24 h">Envoyer</button>`);
+def('cgu','Conditions d’utilisation','Compte','compte',()=>prose(['Bien chez moi est un service d’Habitatpresto qui aide les particuliers à suivre l’entretien de leur logement et à trouver des artisans.','Les informations sur les obligations légales et les aides sont fournies à titre général. Elles ne remplacent pas les textes officiels ni l’avis d’un professionnel.','Les artisans sont des entreprises indépendantes. Habitatpresto vérifie leurs informations administratives mais n’est pas partie aux contrats de travaux.','Version de démonstration, texte d’exemple.']));
+def('a-propos','À propos','Compte','compte',()=>`<section class="card" style="align-items:center;text-align:center;padding:24px">${logo(64)}<h1>Bien chez moi</h1><p class="muted">Version de démonstration</p><p class="small">Un service Habitatpresto, la plateforme qui met en relation particuliers et artisans depuis La Rochelle.</p></section>`);
+
+/* ================= navigation : rendu ================= */
+const SIDE=[['Au quotidien',['accueil','entretien','souci','demandes','alertes','urgences']],['Ma maison',['maison','carnet','cil','energie','artisans']],['S’informer',['mag','assistant']],['Compte',['compte','bienvenue','plan-app']]];
+function renderSide(){const r=cur(),rt=resolve(r),act=rt&&rt.p&&!SIDE.some(g=>g[1].includes(r))?rt.p:r;
+ $('#side').innerHTML=`<div class="brand">${logo(36)}<div><h2>Bien chez moi</h2><p class="small muted">par Habitatpresto</p></div></div>${SIDE.map(([g,ks])=>`<div class="grp"><p>${g}</p>${ks.map(k=>`<a href="#${k}" class="${act===k?'on':''}">${R[k].t}${k==='plan-app'?` · ${allRoutes().length}`:''}</a>`).join('')}</div>`).join('')}
+ <div class="tour"><b>Parcours de démo</b><ol><li>Accueil → chaudière en retard → <b>Réserver</b></li><li>Un souci → photo → <b>envoyer aux artisans</b></li><li>Mes demandes → <b>signer un devis</b> → la facture se range dans le carnet</li><li>Carnet officiel → lien pour le notaire</li></ol><p class="small muted">Données d’exemple, aucune demande réelle n’est envoyée.</p><button class="link" data-a="reset" style="align-self:flex-start">Remettre la démo à zéro</button></div>`;}
+function renderTop(){const r=cur(),rt=resolve(r),unread=S.notifs.filter(n=>!n.read).length,bell=`<a class="iconbtn" href="#alertes" aria-label="Alertes, ${unread} non lues">${ic('bell',20)}${unread?`<span class="dot">${unread}</span>`:''}</a>`,menu=`<button class="iconbtn" data-a="menu" aria-label="Toutes les rubriques">${ic('menu',20)}</button>`;
+ $('#top').innerHTML=r==='accueil'?`${logo(40)}<div class="ttl"><small>Bien chez moi</small><b>Bonjour ${esc(S.user.first)}</b></div>${bell}${menu}`:
+  `${TABS.includes(r)||!rt.p?'':`<a class="iconbtn" href="#${rt.p}" aria-label="Retour">${ic('back',20)}</a>`}<div class="ttl"><small>${esc(rt.g)}</small><b>${esc(rt.t)}</b></div>${bell}${menu}`;}
+function renderTabs(){const r=cur(),rt=resolve(r);let root=r;const seen=new Set();while(!TABS.includes(root)&&resolve(root)&&resolve(root).p&&!seen.has(root)){seen.add(root);root=resolve(root).p;}
+ const t=(k,l,i)=>`<a href="#${k}" class="${root===k?'on':''}">${ic(i)}${l}</a>`;
+ $('#tabs').innerHTML=t('accueil','Accueil','home')+t('entretien','Entretien','cal')+`<a href="#souci" class="fab ${root==='souci'?'on':''}"><span class="c">${ic('cam',24)}</span>Un souci</a>`+t('carnet','Carnet','doc')+t('mag','Le mag','book');
+ $('#tabs').hidden=rt.g==='Démarrer';}
+function render(){const r=cur(),rt=resolve(r);renderSide();renderTop();renderTabs();$('#view').innerHTML=rt.v();}
+
+/* ================= feuilles et toasts ================= */
+function sheet(title,html){$('#layer').innerHTML=`<div class="ov" data-a="closeOv"><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(title)}"><header><h3>${esc(title)}</h3><button class="iconbtn" data-a="close" aria-label="Fermer">${ic('x',20)}</button></header><div class="bd" id="sbd">${html}</div></div></div>`;const f=$('#layer .sheet button');if(f)f.focus({preventScroll:true});}
+const closeSheet=()=>{$('#layer').innerHTML='';};
+let toastT;function toast(m){clearTimeout(toastT);let el=$('.toast');if(!el){el=document.createElement('div');el.className='toast';el.setAttribute('role','status');document.body.appendChild(el);}el.textContent=m;toastT=setTimeout(()=>el.remove(),2600);}
+
+/* ================= logique métier ================= */
+function offersFor(t,e){const base={'ch-ent':129,'cl-ent':159,'in-ram':75}[t.id]||120;return[{pro:e.pro||'Thermique Océan',note:4.7,price:base,tag:'Votre artisan habituel'},{pro:t.id==='in-ram'?'Ramonage Express 17':'Atelier Martin Chauffage',note:4.8,price:base-10,tag:'RGE'},{pro:t.id==='in-ram'?'Les Ramoneurs d’Aunis':'Énergies Charentaises',note:4.5,price:base+10,tag:''}];}
+const slotsList=()=>[2,3,6,9].map(n=>fmtDM(inD(n)));
+function markDone(id){const ft=findTask(id);if(!ft)return;ft.t.last=today();S.history.push({date:today(),label:ft.t.label,by:'Vous',eq:ft.e.id});save();render();const nt=allTasks().find(x=>x.id===id);toast(`C’est noté. Prochain : ${fmt(nt.due)}`);}
+function readImg(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,800/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.72));};im.onerror=()=>cb(null);im.src=r.result;};r.onerror=()=>cb(null);r.readAsDataURL(file);}
+function samplePhoto(){const c=document.createElement('canvas');c.width=640;c.height=480;const g=c.getContext('2d');g.fillStyle='#d9d2c4';g.fillRect(0,0,640,480);g.fillStyle='#7a5a3a';g.fillRect(0,300,640,180);g.fillStyle='#b9b3a8';g.fillRect(200,120,240,180);g.strokeStyle='#e8e4dc';g.lineWidth=18;g.beginPath();g.moveTo(320,60);g.lineTo(320,200);g.quadraticCurveTo(320,250,380,250);g.lineTo(460,250);g.stroke();const gr=g.createRadialGradient(330,360,10,330,360,140);gr.addColorStop(0,'rgba(40,60,70,.65)');gr.addColorStop(1,'rgba(40,60,70,0)');g.fillStyle=gr;g.fillRect(150,280,360,200);g.fillStyle='rgba(120,170,200,.8)';for(let i=0;i<5;i++){g.beginPath();g.arc(330+i*4,262+i*14,5,0,7);g.fill();}return c.toDataURL('image/jpeg',.8);}
+const newId=()=>'HP-'+(48300+Math.floor(Math.random()*600));
+function simulate(id){
+ setTimeout(()=>{const r=S.req.find(x=>x.id===id);if(!r||r.status>0)return;r.status=1;S.notifs.unshift({id:uid('n'),date:today(),t:'Artisans contactés',b:`3 artisans Habitatpresto ont reçu « ${r.title} ».`,go:'req-'+r.id,read:false,kind:'hp'});save();render();toast('3 artisans ont reçu votre demande');},2500);
+ setTimeout(()=>{const r=S.req.find(x=>x.id===id);if(!r||r.status>1)return;r.status=2;const b=120+Math.floor(Math.random()*80);r.quotes=[{pro:'Durand Plomberie',note:4.8,avis:126,price:b,when:fmtDM(inD(4)),line:'Intervention et pièces comprises'},{pro:'Atelier Martin',note:4.7,avis:73,price:b+25,when:fmtDM(inD(2)),line:'Déplacement inclus, garantie 1 an'},{pro:'Océan Services Habitat',note:4.9,avis:190,price:b+50,when:fmtDM(inD(1)),line:'Intervention sous 24 h'}];S.notifs.unshift({id:uid('n'),date:today(),t:'3 devis reçus',b:`Comparez les devis pour « ${r.title} ».`,go:'req-'+r.id,read:false,kind:'hp'});save();render();toast('Vous avez reçu 3 devis');},8000);}
+function sendChat(q){q=(q||'').trim();if(!q)return;S.chat.push({me:true,t:q});const a=answer(q);S.chat.push({me:false,t:a.t,cta:a.cta});save();render();setTimeout(()=>{const c=$('#chat');if(c&&c.lastElementChild)c.lastElementChild.scrollIntoView({block:'nearest',behavior:'smooth'});},30);}
+const EQDEF={pac:{name:'Pompe à chaleur air-eau',icon:'flame',tasks:[{label:'Entretien par un professionnel',every:24,legal:'pac',pro:true,presta:'Entretien de pompe à chaleur'}]},solaire:{name:'Panneaux solaires',icon:'bolt',tasks:[{label:'Nettoyage et contrôle de l’onduleur',every:12,pro:true,presta:'Entretien de panneaux solaires'}]},fosse:{name:'Fosse septique',icon:'drop',tasks:[{label:'Vidange par une entreprise agréée',every:48,pro:true,presta:'Vidange de fosse septique'},{label:'Contrôle du SPANC',every:120,legal:'spanc'}]},adou:{name:'Adoucisseur d’eau',icon:'drop',tasks:[{label:'Recharger le sel',every:2}]},portail:{name:'Portail motorisé',icon:'key',tasks:[{label:'Graisser et vérifier les cellules',every:12}]},piscine:{name:'Piscine',icon:'pool',tasks:[{label:'Vérifier le dispositif de sécurité',every:12,legal:'piscine'},{label:'Hivernage',every:12,pro:true,presta:'Hivernage de piscine'}]}};
+
+const A={
+ menu(){const ks=['accueil','entretien','souci','demandes','maison','carnet','energie','artisans','mag','assistant','alertes','urgences','compte','plan-app'];sheet('Toutes les rubriques',`<div class="grid2">${ks.map(k=>`<a class="tile" href="#${k}" data-a="close">${R[k].t}${k==='plan-app'?`<span class="small">${allRoutes().length} écrans</span>`:''}</a>`).join('')}</div>${demo}`);},
+ close:closeSheet, closeOv(b,ev){if(ev.target===b)closeSheet();},
+ book(b){UI.bk={task:b.dataset.id,o:0,s:0,c:b.dataset.id==='ch-ent'};closeSheet();go('reserver');},
+ bkO(b){UI.bk.o=+b.dataset.i;render();}, bkS(b){UI.bk.s=+b.dataset.i;render();}, bkC(){UI.bk.c=!UI.bk.c;render();},
+ bkOk(){const ft=findTask(UI.bk.task),{e,t}=ft,o=offersFor(t,e)[UI.bk.o],when=slotsList()[UI.bk.s],c=UI.bk.c&&t.id==='ch-ent',r={id:newId(),kind:'resa',title:t.presta,cat:e.name,date:today(),when,pro:o.pro,price:o.price,contract:c,task:t.id,status:1};
+  S.req.unshift(r);if(c)S.contracts.push({t:'Contrat d’entretien chaudière',pro:o.pro,price:'14,90 €/mois',from:today()});S.notifs.unshift({id:uid('n'),date:today(),t:'Rendez-vous confirmé',b:`${o.pro} passe le ${when}.`,go:'req-'+r.id,read:false,kind:'hp'});UI.lastRdv=r.id;save();go('rdv-confirme');},
+ done(b){markDone(b.dataset.id);},
+ prepReq(b){UI.nr={p:b.dataset.p||'Plomberie',d:'',eq:b.dataset.eq||null,photo:null};},
+ sendReq(){if(!$('#nr-ok').checked){toast('Cochez l’accord pour être rappelé(e)');return;}const r={id:newId(),kind:'devis',title:$('#nr-p').value,cat:$('#nr-p').value,date:today(),photo:UI.nr.photo||null,desc:$('#nr-d').value,status:0,quotes:[],chosen:0,split:false,rating:0};
+  S.req.unshift(r);UI.lastReq=r.id;save();simulate(r.id);UI.souci={photo:null,cat:null,desc:''};go('demande-envoyee');},
+ season(b){const i=+b.dataset.i;S.season.items[i].done=!S.season.items[i].done;save();render();},
+ docCat(b){UI.docCat=b.dataset.c;render();}, magCat(b){UI.magCat=b.dataset.k;render();},
+ souciCat(b){UI.souci.cat=b.dataset.c;render();},
+ samplePhoto(){UI.souci.photo=samplePhoto();UI.souci.cat=UI.souci.cat||'plomberie';UI.souci.desc=UI.souci.desc||'De l’eau coule sous l’évier depuis ce matin, le meuble est mouillé.';render();},
+ souciNoPhoto(){UI.souci.photo=null;render();},
+ souciFrom(b){UI.souci.cat=b.dataset.c;go('souci');},
+ souciSend(){const s=UI.souci,D=DIAG[s.cat||'plomberie'];UI.nr={p:D.presta,d:(s.desc||'')+`\n\nPremier avis : ${D.title}`,eq:null,photo:s.photo};},
+ souciKeep(){const s=UI.souci;S.docs.push({id:uid('d'),cat:'Photos',title:`${DIAG[s.cat||'plomberie'].t} · ${fmt(today())}`,date:today(),src:'Vous',by:'Photo du problème',img:s.photo||undefined});save();UI.souci={photo:null,cat:null,desc:''};UI.docCat='Photos';toast('Photo rangée dans votre carnet');go('carnet');},
+ pickQ(b){S.req.find(x=>x.id===b.dataset.id).chosen=+b.dataset.i;save();render();},
+ splitQ(b){const r=S.req.find(x=>x.id===b.dataset.id);r.split=!r.split;save();render();},
+ signQ(b){const r=S.req.find(x=>x.id===b.dataset.id),q=r.quotes[r.chosen];r.status=3;S.docs.push({id:uid('d'),cat:'Factures',title:'Devis signé · '+r.title,date:today(),src:'Taloche',by:q.pro,amount:q.price});
+  if(!S.pros.find(p=>p.name===q.pro))S.pros.push({id:uid('p'),name:q.pro,job:'Artisan Habitatpresto',metier:'plombier',note:q.note,avis:q.avis,phone:'05 46 00 00 09',last:today(),city:'La Rochelle',since:2012});
+  S.notifs.unshift({id:uid('n'),date:today(),t:'Devis signé',b:`${q.pro} intervient ${q.when}.`,go:'req-'+r.id,read:false,kind:'hp'});save();render();toast('Devis signé, l’artisan est prévenu');},
+ workDone(b){const r=S.req.find(x=>x.id===b.dataset.id),q=r.quotes[r.chosen];r.status=4;r.doneDate=today();S.docs.push({id:uid('d'),cat:'Factures',title:'Facture · '+r.title,date:today(),src:'Taloche',by:q.pro,amount:q.price,cil:'travaux'});S.history.push({date:today(),label:r.title,by:q.pro});const p=S.pros.find(x=>x.name===q.pro);if(p)p.last=today();save();render();toast('Facture rangée dans votre carnet');},
+ visitDone(b){const r=S.req.find(x=>x.id===b.dataset.id),ft=findTask(r.task);r.status=2;if(ft){ft.t.last=today();S.history.push({date:today(),label:r.title,by:r.pro,eq:ft.e.id});S.docs.push({id:uid('d'),cat:'Attestations',title:'Attestation · '+r.title.toLowerCase(),date:today(),src:'Taloche',by:r.pro,eq:ft.e.id,amount:r.contract?null:r.price,cil:'notices'});}
+  if(r.task==='ch-ent')S.notifs=S.notifs.filter(n=>n.kind!=='late');save();render();toast('Attestation rangée, prochain rappel programmé');},
+ rate(b){S.req.find(x=>x.id===b.dataset.id).rating=+b.dataset.n;save();render();},
+ delDoc(b){sheet('Supprimer ce document ?',`<p>Il sera retiré de votre carnet.</p><button class="btn full danger" data-a="delDocOk" data-id="${b.dataset.id}">Supprimer</button><button class="btn full ghost" data-a="close">Annuler</button>`);},
+ delDocOk(b){S.docs=S.docs.filter(d=>d.id!==b.dataset.id);save();closeSheet();toast('Document supprimé');go('carnet');},
+ saveArt(b){const id=b.dataset.id;S.saved=S.saved.includes(id)?S.saved.filter(x=>x!==id):[...S.saved,id];save();render();toast(S.saved.includes(id)?'Article enregistré':'Article retiré');},
+ share(){const w=$('#sh-who').value.trim();if(!w){toast('Indiquez le nom ou l’e-mail');return;}const role=$('#sh-role').value.split(' · ');S.settings.share.push({who:w,role:role[0],scope:role[1]||''});save();render();toast('Invitation envoyée à '+w);},
+ unshare(b){S.settings.share.splice(+b.dataset.i,1);save();render();},
+ rebook(b){const p=S.pros.find(x=>x.id===b.dataset.id),e=S.eq.find(x=>x.id===p.eq),t=e&&e.tasks.find(x=>x.pro);if(t){UI.bk={task:t.id,o:0,s:0,c:false};go('reserver');}else{UI.nr={p:'Autre',d:'Je souhaite refaire appel à '+p.name,eq:null,photo:null};go('nouvelle-demande');}},
+ copy(b){const t=b.dataset.t;try{navigator.clipboard.writeText(t).then(()=>toast('Copié : '+t),()=>toast(t));}catch(e){toast(t);}},
+ toast(b){toast(b.dataset.m);}, toastNav(b){toast(b.dataset.m);},
+ readAll(){S.notifs.forEach(n=>n.read=true);save();render();},
+ notif(b){const n=S.notifs.find(x=>x.id===b.dataset.id);if(n){n.read=true;save();}},
+ set(b){S.settings[b.dataset.k]=b.checked;save();toast('Préférence enregistrée');},
+ ask(b){sendChat(b.dataset.q);}, setQ(b){UI.q=b.dataset.q;render();},
+ saveHouse(){['address','type','heating','ecs','walls','roof','windows','sanit'].forEach(k=>{const el=$('#fl-'+k);if(el&&el.value.trim())S.house[k]=el.value.trim();});['year','surface','rooms','levels'].forEach(k=>{const el=$('#fl-'+k);if(el&&+el.value)S.house[k]=+el.value;});save();toast('Fiche mise à jour');go('maison');},
+ saveEq(){const ty=$('#ae-t').value,m=$('#ae-m').value||'Modèle non renseigné',y=+$('#ae-y').value||T0.getFullYear(),D=EQDEF[ty],id=uid('eq');S.eq.push({id,icon:D.icon,name:D.name,model:m,year:y,room:'—',photo:UI.newEqPhoto||null,tasks:D.tasks.map((t,i)=>({...t,id:id+'-'+i,last:`${y}-${String(T0.getMonth()+1).padStart(2,'0')}-01`}))});UI.newEqPhoto=null;save();toast(D.name+' ajouté, rappels créés');go('eq-'+id);},
+ eqPhotoFor(b){UI.eqPhoto=b.dataset.id;},
+ onbAdr(){const a=$('#onb-adr'),s=$('#onb-st');if(a&&a.value.trim())S.house.address=a.value.trim();if(s)S.house.status=s.value;save();go('onb-logement');},
+ onbEq(b){UI.onbEq[+b.dataset.i]=b.checked?1:0;render();},
+ saveProfil(){['first','last','email','phone'].forEach(k=>{const v=$('#pf-'+k).value.trim();if(v)S.user[k]=v;});save();toast('Profil enregistré');go('compte');},
+ addHome(){const n=$('#lg-n').value.trim(),a=$('#lg-a').value.trim();if(!n||!a){toast('Indiquez le nom et l’adresse');return;}S.homes.push({name:n,address:a});save();render();toast('Logement ajouté');},
+ addMember(){const n=$('#fy-n').value.trim();if(!n){toast('Indiquez un nom ou un e-mail');return;}S.household.push({n,r:'Invitation envoyée'});save();render();},
+ simRev(b){UI.sim.rev=b.dataset.k;render();}, simTr(b){const k=b.dataset.k,l=UI.sim.travaux;UI.sim.travaux=l.includes(k)?l.filter(x=>x!==k):[...l,k];render();},
+ reset(){sheet('Remettre la démo à zéro ?',`<p>Vos ajouts dans cette démo (demandes, documents, coches) seront effacés.</p><button class="btn full danger" data-a="resetOk">Remettre à zéro</button><button class="btn full ghost" data-a="close">Annuler</button>`);},
+ resetOk(){S=seed();ensureSeason();UI.souci={photo:null,cat:null,desc:''};save();closeSheet();go('accueil');toast('Démo remise à zéro');}
+};
+
+/* ================= évènements ================= */
+document.addEventListener('click',ev=>{
+ const b=ev.target.closest('[data-a]');
+ if(b){const fn=A[b.dataset.a];if(fn){if(b.dataset.a==='closeOv'){fn(b,ev);return;}const tag=b.tagName;if(!(tag==='A'||tag==='LABEL'||tag==='INPUT'))ev.preventDefault();fn(b,ev);}}
+ const a=ev.target.closest('a[href^="#"]');if(a&&$('#layer').contains(a))closeSheet();
+});
+document.addEventListener('input',ev=>{const k=ev.target.dataset.in;if(!k)return;
+ if(k==='souciDesc'){UI.souci.desc=ev.target.value;return;}
+ if(k==='docQ'||k==='q'){UI[k]=ev.target.value;const p=ev.target.selectionStart,id=ev.target.id;render();const n=document.getElementById(id);if(n){n.focus();n.setSelectionRange(p,p);}}});
+document.addEventListener('change',ev=>{const t=ev.target,f=t.files&&t.files[0];if(!f)return;
+ if(t.id==='f-photo')readImg(f,src=>{if(!src){toast('Ce fichier n’est pas une image lisible');return;}UI.souci.photo=src;render();});
+ if(t.id==='f-doc'){const cat=($('#ad-c')||{}).value||(f.type.startsWith('image/')?'Photos':'Factures'),eq=($('#ad-e')||{}).value||undefined;const add=img=>{S.docs.push({id:uid('d'),cat,title:f.name.replace(/\.[^.]+$/,''),date:today(),src:'Vous',by:'Ajout manuel',eq,img:img||undefined});save();UI.docCat='Tous';toast('Document ajouté au carnet');go('carnet');};if(f.type.startsWith('image/'))readImg(f,add);else add(null);}
+ if(t.id==='f-eqphoto')readImg(f,src=>{if(!src)return;if(UI.eqPhoto==='new'){UI.newEqPhoto=src;toast('Photo de la plaque ajoutée');return;}const e=S.eq.find(x=>x.id===UI.eqPhoto);if(e){e.photo=src;save();render();toast('Plaque enregistrée');}});
+ if(t.id==='f-gal')readImg(f,src=>{if(src){S.photos.unshift(src);save();render();toast('Photo ajoutée');}});
+ t.value='';});
+document.addEventListener('submit',ev=>{if(ev.target.id==='chat-f'){ev.preventDefault();sendChat($('#chat-in').value);setTimeout(()=>{const n=$('#chat-in');if(n)n.focus();},40);}});
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&$('#layer').innerHTML)closeSheet();});
+let last=cur();
+window.addEventListener('hashchange',()=>{const r=cur();if(r!==last){window.scrollTo(0,0);last=r;}closeSheet();render();});
+render();
+})();
+</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+
+</body>
+</html>

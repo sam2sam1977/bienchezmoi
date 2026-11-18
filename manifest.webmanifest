@@ -1,0 +1,30 @@
+{
+  "name": "Bien chez moi",
+  "short_name": "Bien chez moi",
+  "description": "Le carnet de santé de votre maison, par Habitatpresto",
+  "lang": "fr",
+  "start_url": "./#accueil",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ECEFEB",
+  "theme_color": "#1E6B59",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
